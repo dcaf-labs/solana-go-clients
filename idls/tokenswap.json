@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "name": "token_swap",
+  "name": "tokenswap",
   "ref": "https://github.com/solana-labs/solana-program-library/blob/master/token-swap/js/src/index.ts",
   "accounts": [
     {
