@@ -9,7 +9,7 @@ import (
 
 type DepositParams struct {
 	TokenADepositAmount uint64
-	DcaCycles           uint64
+	NumberOfSwaps       uint64
 }
 
 func (obj DepositParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -18,8 +18,8 @@ func (obj DepositParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err err
 	if err != nil {
 		return err
 	}
-	// Serialize `DcaCycles` param:
-	err = encoder.Encode(obj.DcaCycles)
+	// Serialize `NumberOfSwaps` param:
+	err = encoder.Encode(obj.NumberOfSwaps)
 	if err != nil {
 		return err
 	}
@@ -32,30 +32,8 @@ func (obj *DepositParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 	if err != nil {
 		return err
 	}
-	// Deserialize `DcaCycles`:
-	err = decoder.Decode(&obj.DcaCycles)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type InitializeVaultParams struct {
-	WhitelistedSwaps []ag_solanago.PublicKey
-}
-
-func (obj InitializeVaultParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `WhitelistedSwaps` param:
-	err = encoder.Encode(obj.WhitelistedSwaps)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *InitializeVaultParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `WhitelistedSwaps`:
-	err = decoder.Decode(&obj.WhitelistedSwaps)
+	// Deserialize `NumberOfSwaps`:
+	err = decoder.Decode(&obj.NumberOfSwaps)
 	if err != nil {
 		return err
 	}
@@ -85,10 +63,10 @@ func (obj *InitializeVaultPeriodParams) UnmarshalWithDecoder(decoder *ag_binary.
 }
 
 type InitVaultProtoConfigParams struct {
-	Granularity          uint64
-	TriggerDcaSpread     uint16
-	BaseWithdrawalSpread uint16
-	Admin                ag_solanago.PublicKey
+	Granularity             uint64
+	TokenADripTriggerSpread uint16
+	TokenBWithdrawalSpread  uint16
+	Admin                   ag_solanago.PublicKey
 }
 
 func (obj InitVaultProtoConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -97,13 +75,13 @@ func (obj InitVaultProtoConfigParams) MarshalWithEncoder(encoder *ag_binary.Enco
 	if err != nil {
 		return err
 	}
-	// Serialize `TriggerDcaSpread` param:
-	err = encoder.Encode(obj.TriggerDcaSpread)
+	// Serialize `TokenADripTriggerSpread` param:
+	err = encoder.Encode(obj.TokenADripTriggerSpread)
 	if err != nil {
 		return err
 	}
-	// Serialize `BaseWithdrawalSpread` param:
-	err = encoder.Encode(obj.BaseWithdrawalSpread)
+	// Serialize `TokenBWithdrawalSpread` param:
+	err = encoder.Encode(obj.TokenBWithdrawalSpread)
 	if err != nil {
 		return err
 	}
@@ -121,13 +99,13 @@ func (obj *InitVaultProtoConfigParams) UnmarshalWithDecoder(decoder *ag_binary.D
 	if err != nil {
 		return err
 	}
-	// Deserialize `TriggerDcaSpread`:
-	err = decoder.Decode(&obj.TriggerDcaSpread)
+	// Deserialize `TokenADripTriggerSpread`:
+	err = decoder.Decode(&obj.TokenADripTriggerSpread)
 	if err != nil {
 		return err
 	}
-	// Deserialize `BaseWithdrawalSpread`:
-	err = decoder.Decode(&obj.BaseWithdrawalSpread)
+	// Deserialize `TokenBWithdrawalSpread`:
+	err = decoder.Decode(&obj.TokenBWithdrawalSpread)
 	if err != nil {
 		return err
 	}
@@ -139,68 +117,24 @@ func (obj *InitVaultProtoConfigParams) UnmarshalWithDecoder(decoder *ag_binary.D
 	return nil
 }
 
-type ErrorCode ag_binary.BorshEnum
+type InitializeVaultParams struct {
+	WhitelistedSwaps []ag_solanago.PublicKey
+}
 
-const (
-	ErrorCodeCannotGetPositionBump ErrorCode = iota
-	ErrorCodeCannotGetVaultBump
-	ErrorCodeCannotGetVaultPeriodBump
-	ErrorCodeDuplicateDCAError
-	ErrorCodeIncompleteSwapError
-	ErrorCodeInvalidGranularity
-	ErrorCodeInvalidMint
-	ErrorCodeInvalidSpread
-	ErrorCodeInvalidSwapAccount
-	ErrorCodeInvalidNumSwaps
-	ErrorCodeInvalidVaultProtoConfigReference
-	ErrorCodeInvalidSwapAuthorityAccount
-	ErrorCodeInvalidSwapFeeAccount
-	ErrorCodeInvalidVaultPeriod
-	ErrorCodeInvalidVaultReference
-	ErrorCodePeriodicDripAmountIsZero
-	ErrorCodePositionAlreadyClosed
-	ErrorCodeWithdrawableAmountIsZero
-)
-
-func (value ErrorCode) String() string {
-	switch value {
-	case ErrorCodeCannotGetPositionBump:
-		return "CannotGetPositionBump"
-	case ErrorCodeCannotGetVaultBump:
-		return "CannotGetVaultBump"
-	case ErrorCodeCannotGetVaultPeriodBump:
-		return "CannotGetVaultPeriodBump"
-	case ErrorCodeDuplicateDCAError:
-		return "DuplicateDCAError"
-	case ErrorCodeIncompleteSwapError:
-		return "IncompleteSwapError"
-	case ErrorCodeInvalidGranularity:
-		return "InvalidGranularity"
-	case ErrorCodeInvalidMint:
-		return "InvalidMint"
-	case ErrorCodeInvalidSpread:
-		return "InvalidSpread"
-	case ErrorCodeInvalidSwapAccount:
-		return "InvalidSwapAccount"
-	case ErrorCodeInvalidNumSwaps:
-		return "InvalidNumSwaps"
-	case ErrorCodeInvalidVaultProtoConfigReference:
-		return "InvalidVaultProtoConfigReference"
-	case ErrorCodeInvalidSwapAuthorityAccount:
-		return "InvalidSwapAuthorityAccount"
-	case ErrorCodeInvalidSwapFeeAccount:
-		return "InvalidSwapFeeAccount"
-	case ErrorCodeInvalidVaultPeriod:
-		return "InvalidVaultPeriod"
-	case ErrorCodeInvalidVaultReference:
-		return "InvalidVaultReference"
-	case ErrorCodePeriodicDripAmountIsZero:
-		return "PeriodicDripAmountIsZero"
-	case ErrorCodePositionAlreadyClosed:
-		return "PositionAlreadyClosed"
-	case ErrorCodeWithdrawableAmountIsZero:
-		return "WithdrawableAmountIsZero"
-	default:
-		return ""
+func (obj InitializeVaultParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `WhitelistedSwaps` param:
+	err = encoder.Encode(obj.WhitelistedSwaps)
+	if err != nil {
+		return err
 	}
+	return nil
+}
+
+func (obj *InitializeVaultParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `WhitelistedSwaps`:
+	err = decoder.Decode(&obj.WhitelistedSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
 }

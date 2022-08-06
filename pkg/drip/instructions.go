@@ -12,7 +12,7 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-var ProgramID ag_solanago.PublicKey = ag_solanago.MustPublicKeyFromBase58("4VBtW5cjQJk8tme9fXMiok6xAfDSwv5Qp7LN6arWEP7x")
+var ProgramID ag_solanago.PublicKey
 
 func SetProgramID(pubkey ag_solanago.PublicKey) {
 	ProgramID = pubkey
@@ -40,7 +40,9 @@ var (
 
 	Instruction_WithdrawB = ag_binary.TypeID([8]byte{28, 146, 254, 247, 183, 161, 195, 149})
 
-	Instruction_TriggerDca = ag_binary.TypeID([8]byte{151, 43, 127, 87, 124, 189, 232, 35})
+	Instruction_DripSplTokenSwap = ag_binary.TypeID([8]byte{129, 32, 61, 181, 42, 74, 219, 106})
+
+	Instruction_DripOrcaWhirlpool = ag_binary.TypeID([8]byte{31, 217, 180, 147, 224, 40, 53, 88})
 )
 
 // InstructionIDToName returns the name of the instruction given its ID.
@@ -58,8 +60,10 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "Deposit"
 	case Instruction_WithdrawB:
 		return "WithdrawB"
-	case Instruction_TriggerDca:
-		return "TriggerDca"
+	case Instruction_DripSplTokenSwap:
+		return "DripSplTokenSwap"
+	case Instruction_DripOrcaWhirlpool:
+		return "DripOrcaWhirlpool"
 	default:
 		return ""
 	}
@@ -99,7 +103,10 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 			"withdraw_b", (*WithdrawB)(nil),
 		},
 		{
-			"trigger_dca", (*TriggerDca)(nil),
+			"drip_spl_token_swap", (*DripSplTokenSwap)(nil),
+		},
+		{
+			"drip_orca_whirlpool", (*DripOrcaWhirlpool)(nil),
 		},
 	},
 )

@@ -9,16 +9,16 @@ import (
 )
 
 type Position struct {
-	Vault                    ag_solanago.PublicKey
-	PositionAuthority        ag_solanago.PublicKey
-	DepositedTokenAAmount    uint64
-	WithdrawnTokenBAmount    uint64
-	DepositTimestamp         int64
-	DcaPeriodIdBeforeDeposit uint64
-	NumberOfSwaps            uint64
-	PeriodicDripAmount       uint64
-	IsClosed                 bool
-	Bump                     uint8
+	Vault                     ag_solanago.PublicKey
+	PositionAuthority         ag_solanago.PublicKey
+	DepositedTokenAAmount     uint64
+	WithdrawnTokenBAmount     uint64
+	DepositTimestamp          int64
+	DripPeriodIdBeforeDeposit uint64
+	NumberOfSwaps             uint64
+	PeriodicDripAmount        uint64
+	IsClosed                  bool
+	Bump                      uint8
 }
 
 var PositionDiscriminator = [8]byte{170, 188, 143, 228, 122, 64, 247, 208}
@@ -54,8 +54,8 @@ func (obj Position) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	if err != nil {
 		return err
 	}
-	// Serialize `DcaPeriodIdBeforeDeposit` param:
-	err = encoder.Encode(obj.DcaPeriodIdBeforeDeposit)
+	// Serialize `DripPeriodIdBeforeDeposit` param:
+	err = encoder.Encode(obj.DripPeriodIdBeforeDeposit)
 	if err != nil {
 		return err
 	}
@@ -121,8 +121,8 @@ func (obj *Position) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error
 	if err != nil {
 		return err
 	}
-	// Deserialize `DcaPeriodIdBeforeDeposit`:
-	err = decoder.Decode(&obj.DcaPeriodIdBeforeDeposit)
+	// Deserialize `DripPeriodIdBeforeDeposit`:
+	err = decoder.Decode(&obj.DripPeriodIdBeforeDeposit)
 	if err != nil {
 		return err
 	}
@@ -149,19 +149,191 @@ func (obj *Position) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error
 	return nil
 }
 
+type VaultPeriod struct {
+	Vault         ag_solanago.PublicKey
+	PeriodId      uint64
+	Dar           uint64
+	Twap          ag_binary.Uint128
+	DripTimestamp int64
+	Bump          uint8
+}
+
+var VaultPeriodDiscriminator = [8]byte{224, 196, 159, 18, 79, 227, 22, 122}
+
+func (obj VaultPeriod) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(VaultPeriodDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `Vault` param:
+	err = encoder.Encode(obj.Vault)
+	if err != nil {
+		return err
+	}
+	// Serialize `PeriodId` param:
+	err = encoder.Encode(obj.PeriodId)
+	if err != nil {
+		return err
+	}
+	// Serialize `Dar` param:
+	err = encoder.Encode(obj.Dar)
+	if err != nil {
+		return err
+	}
+	// Serialize `Twap` param:
+	err = encoder.Encode(obj.Twap)
+	if err != nil {
+		return err
+	}
+	// Serialize `DripTimestamp` param:
+	err = encoder.Encode(obj.DripTimestamp)
+	if err != nil {
+		return err
+	}
+	// Serialize `Bump` param:
+	err = encoder.Encode(obj.Bump)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *VaultPeriod) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(VaultPeriodDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[224 196 159 18 79 227 22 122]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `Vault`:
+	err = decoder.Decode(&obj.Vault)
+	if err != nil {
+		return err
+	}
+	// Deserialize `PeriodId`:
+	err = decoder.Decode(&obj.PeriodId)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Dar`:
+	err = decoder.Decode(&obj.Dar)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Twap`:
+	err = decoder.Decode(&obj.Twap)
+	if err != nil {
+		return err
+	}
+	// Deserialize `DripTimestamp`:
+	err = decoder.Decode(&obj.DripTimestamp)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Bump`:
+	err = decoder.Decode(&obj.Bump)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type VaultProtoConfig struct {
+	Granularity             uint64
+	TokenADripTriggerSpread uint16
+	TokenBWithdrawalSpread  uint16
+	Admin                   ag_solanago.PublicKey
+}
+
+var VaultProtoConfigDiscriminator = [8]byte{173, 22, 36, 165, 190, 3, 142, 199}
+
+func (obj VaultProtoConfig) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(VaultProtoConfigDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `Granularity` param:
+	err = encoder.Encode(obj.Granularity)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenADripTriggerSpread` param:
+	err = encoder.Encode(obj.TokenADripTriggerSpread)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenBWithdrawalSpread` param:
+	err = encoder.Encode(obj.TokenBWithdrawalSpread)
+	if err != nil {
+		return err
+	}
+	// Serialize `Admin` param:
+	err = encoder.Encode(obj.Admin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *VaultProtoConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(VaultProtoConfigDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[173 22 36 165 190 3 142 199]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `Granularity`:
+	err = decoder.Decode(&obj.Granularity)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenADripTriggerSpread`:
+	err = decoder.Decode(&obj.TokenADripTriggerSpread)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenBWithdrawalSpread`:
+	err = decoder.Decode(&obj.TokenBWithdrawalSpread)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Admin`:
+	err = decoder.Decode(&obj.Admin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type Vault struct {
-	ProtoConfig            ag_solanago.PublicKey
-	TokenAMint             ag_solanago.PublicKey
-	TokenBMint             ag_solanago.PublicKey
-	TokenAAccount          ag_solanago.PublicKey
-	TokenBAccount          ag_solanago.PublicKey
-	TreasuryTokenBAccount  ag_solanago.PublicKey
-	WhitelistedSwaps       [5]ag_solanago.PublicKey
-	LastDcaPeriod          uint64
-	DripAmount             uint64
-	DcaActivationTimestamp int64
-	Bump                   uint8
-	LimitSwaps             bool
+	ProtoConfig             ag_solanago.PublicKey
+	TokenAMint              ag_solanago.PublicKey
+	TokenBMint              ag_solanago.PublicKey
+	TokenAAccount           ag_solanago.PublicKey
+	TokenBAccount           ag_solanago.PublicKey
+	TreasuryTokenBAccount   ag_solanago.PublicKey
+	WhitelistedSwaps        [5]ag_solanago.PublicKey
+	LastDripPeriod          uint64
+	DripAmount              uint64
+	DripActivationTimestamp int64
+	Bump                    uint8
+	LimitSwaps              bool
 }
 
 var VaultDiscriminator = [8]byte{211, 8, 232, 43, 2, 152, 117, 119}
@@ -207,8 +379,8 @@ func (obj Vault) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	if err != nil {
 		return err
 	}
-	// Serialize `LastDcaPeriod` param:
-	err = encoder.Encode(obj.LastDcaPeriod)
+	// Serialize `LastDripPeriod` param:
+	err = encoder.Encode(obj.LastDripPeriod)
 	if err != nil {
 		return err
 	}
@@ -217,8 +389,8 @@ func (obj Vault) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	if err != nil {
 		return err
 	}
-	// Serialize `DcaActivationTimestamp` param:
-	err = encoder.Encode(obj.DcaActivationTimestamp)
+	// Serialize `DripActivationTimestamp` param:
+	err = encoder.Encode(obj.DripActivationTimestamp)
 	if err != nil {
 		return err
 	}
@@ -284,8 +456,8 @@ func (obj *Vault) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	if err != nil {
 		return err
 	}
-	// Deserialize `LastDcaPeriod`:
-	err = decoder.Decode(&obj.LastDcaPeriod)
+	// Deserialize `LastDripPeriod`:
+	err = decoder.Decode(&obj.LastDripPeriod)
 	if err != nil {
 		return err
 	}
@@ -294,8 +466,8 @@ func (obj *Vault) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	if err != nil {
 		return err
 	}
-	// Deserialize `DcaActivationTimestamp`:
-	err = decoder.Decode(&obj.DcaActivationTimestamp)
+	// Deserialize `DripActivationTimestamp`:
+	err = decoder.Decode(&obj.DripActivationTimestamp)
 	if err != nil {
 		return err
 	}
@@ -306,178 +478,6 @@ func (obj *Vault) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	}
 	// Deserialize `LimitSwaps`:
 	err = decoder.Decode(&obj.LimitSwaps)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type VaultPeriod struct {
-	Vault        ag_solanago.PublicKey
-	PeriodId     uint64
-	Dar          uint64
-	Twap         ag_binary.Uint128
-	DcaTimestamp int64
-	Bump         uint8
-}
-
-var VaultPeriodDiscriminator = [8]byte{224, 196, 159, 18, 79, 227, 22, 122}
-
-func (obj VaultPeriod) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(VaultPeriodDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
-	// Serialize `Vault` param:
-	err = encoder.Encode(obj.Vault)
-	if err != nil {
-		return err
-	}
-	// Serialize `PeriodId` param:
-	err = encoder.Encode(obj.PeriodId)
-	if err != nil {
-		return err
-	}
-	// Serialize `Dar` param:
-	err = encoder.Encode(obj.Dar)
-	if err != nil {
-		return err
-	}
-	// Serialize `Twap` param:
-	err = encoder.Encode(obj.Twap)
-	if err != nil {
-		return err
-	}
-	// Serialize `DcaTimestamp` param:
-	err = encoder.Encode(obj.DcaTimestamp)
-	if err != nil {
-		return err
-	}
-	// Serialize `Bump` param:
-	err = encoder.Encode(obj.Bump)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *VaultPeriod) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(VaultPeriodDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[224 196 159 18 79 227 22 122]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
-	// Deserialize `Vault`:
-	err = decoder.Decode(&obj.Vault)
-	if err != nil {
-		return err
-	}
-	// Deserialize `PeriodId`:
-	err = decoder.Decode(&obj.PeriodId)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Dar`:
-	err = decoder.Decode(&obj.Dar)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Twap`:
-	err = decoder.Decode(&obj.Twap)
-	if err != nil {
-		return err
-	}
-	// Deserialize `DcaTimestamp`:
-	err = decoder.Decode(&obj.DcaTimestamp)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Bump`:
-	err = decoder.Decode(&obj.Bump)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type VaultProtoConfig struct {
-	Granularity          uint64
-	TriggerDcaSpread     uint16
-	BaseWithdrawalSpread uint16
-	Admin                ag_solanago.PublicKey
-}
-
-var VaultProtoConfigDiscriminator = [8]byte{173, 22, 36, 165, 190, 3, 142, 199}
-
-func (obj VaultProtoConfig) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(VaultProtoConfigDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
-	// Serialize `Granularity` param:
-	err = encoder.Encode(obj.Granularity)
-	if err != nil {
-		return err
-	}
-	// Serialize `TriggerDcaSpread` param:
-	err = encoder.Encode(obj.TriggerDcaSpread)
-	if err != nil {
-		return err
-	}
-	// Serialize `BaseWithdrawalSpread` param:
-	err = encoder.Encode(obj.BaseWithdrawalSpread)
-	if err != nil {
-		return err
-	}
-	// Serialize `Admin` param:
-	err = encoder.Encode(obj.Admin)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *VaultProtoConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(VaultProtoConfigDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[173 22 36 165 190 3 142 199]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
-	// Deserialize `Granularity`:
-	err = decoder.Decode(&obj.Granularity)
-	if err != nil {
-		return err
-	}
-	// Deserialize `TriggerDcaSpread`:
-	err = decoder.Decode(&obj.TriggerDcaSpread)
-	if err != nil {
-		return err
-	}
-	// Deserialize `BaseWithdrawalSpread`:
-	err = decoder.Decode(&obj.BaseWithdrawalSpread)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Admin`:
-	err = decoder.Decode(&obj.Admin)
 	if err != nil {
 		return err
 	}
