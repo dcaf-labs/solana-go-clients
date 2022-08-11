@@ -118,10 +118,16 @@ func (obj *InitVaultProtoConfigParams) UnmarshalWithDecoder(decoder *ag_binary.D
 }
 
 type InitializeVaultParams struct {
+	MaxSlippageBps   uint16
 	WhitelistedSwaps []ag_solanago.PublicKey
 }
 
 func (obj InitializeVaultParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `MaxSlippageBps` param:
+	err = encoder.Encode(obj.MaxSlippageBps)
+	if err != nil {
+		return err
+	}
 	// Serialize `WhitelistedSwaps` param:
 	err = encoder.Encode(obj.WhitelistedSwaps)
 	if err != nil {
@@ -131,6 +137,11 @@ func (obj InitializeVaultParams) MarshalWithEncoder(encoder *ag_binary.Encoder) 
 }
 
 func (obj *InitializeVaultParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `MaxSlippageBps`:
+	err = decoder.Decode(&obj.MaxSlippageBps)
+	if err != nil {
+		return err
+	}
 	// Deserialize `WhitelistedSwaps`:
 	err = decoder.Decode(&obj.WhitelistedSwaps)
 	if err != nil {

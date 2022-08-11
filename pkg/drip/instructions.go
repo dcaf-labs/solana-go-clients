@@ -38,6 +38,8 @@ var (
 
 	Instruction_Deposit = ag_binary.TypeID([8]byte{242, 35, 198, 137, 82, 225, 242, 182})
 
+	Instruction_DepositWithMetadata = ag_binary.TypeID([8]byte{66, 112, 168, 108, 67, 61, 27, 151})
+
 	Instruction_WithdrawB = ag_binary.TypeID([8]byte{28, 146, 254, 247, 183, 161, 195, 149})
 
 	Instruction_DripSplTokenSwap = ag_binary.TypeID([8]byte{129, 32, 61, 181, 42, 74, 219, 106})
@@ -58,6 +60,8 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "ClosePosition"
 	case Instruction_Deposit:
 		return "Deposit"
+	case Instruction_DepositWithMetadata:
+		return "DepositWithMetadata"
 	case Instruction_WithdrawB:
 		return "WithdrawB"
 	case Instruction_DripSplTokenSwap:
@@ -98,6 +102,9 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 		},
 		{
 			"deposit", (*Deposit)(nil),
+		},
+		{
+			"deposit_with_metadata", (*DepositWithMetadata)(nil),
 		},
 		{
 			"withdraw_b", (*WithdrawB)(nil),

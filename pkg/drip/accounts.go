@@ -334,6 +334,7 @@ type Vault struct {
 	DripActivationTimestamp int64
 	Bump                    uint8
 	LimitSwaps              bool
+	MaxSlippageBps          uint16
 }
 
 var VaultDiscriminator = [8]byte{211, 8, 232, 43, 2, 152, 117, 119}
@@ -401,6 +402,11 @@ func (obj Vault) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	}
 	// Serialize `LimitSwaps` param:
 	err = encoder.Encode(obj.LimitSwaps)
+	if err != nil {
+		return err
+	}
+	// Serialize `MaxSlippageBps` param:
+	err = encoder.Encode(obj.MaxSlippageBps)
 	if err != nil {
 		return err
 	}
@@ -478,6 +484,11 @@ func (obj *Vault) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	}
 	// Deserialize `LimitSwaps`:
 	err = decoder.Decode(&obj.LimitSwaps)
+	if err != nil {
+		return err
+	}
+	// Deserialize `MaxSlippageBps`:
+	err = decoder.Decode(&obj.MaxSlippageBps)
 	if err != nil {
 		return err
 	}
