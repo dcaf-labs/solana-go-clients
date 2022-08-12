@@ -23,46 +23,42 @@ type DripOrcaWhirlpool struct {
 	//
 	// [4] = [WRITE] currentVaultPeriod
 	//
-	// [5] = [] tokenAMint
+	// [5] = [WRITE] vaultTokenAAccount
 	//
-	// [6] = [] tokenBMint
+	// [6] = [WRITE] vaultTokenBAccount
 	//
-	// [7] = [WRITE] vaultTokenAAccount
+	// [7] = [WRITE] swapTokenAAccount
 	//
-	// [8] = [WRITE] vaultTokenBAccount
+	// [8] = [WRITE] swapTokenBAccount
 	//
-	// [9] = [WRITE] swapTokenAAccount
+	// [9] = [WRITE] dripFeeTokenAAccount
 	//
-	// [10] = [WRITE] swapTokenBAccount
+	// [10] = [] tokenProgram
 	//
-	// [11] = [WRITE] dripFeeTokenAAccount
+	// [11] = [] associatedTokenProgram
 	//
-	// [12] = [] tokenProgram
+	// [12] = [] whirlpoolProgram
 	//
-	// [13] = [] associatedTokenProgram
+	// [13] = [] systemProgram
 	//
-	// [14] = [] whirlpoolProgram
+	// [14] = [] rent
 	//
-	// [15] = [] systemProgram
+	// [15] = [WRITE] whirlpool
 	//
-	// [16] = [] rent
+	// [16] = [WRITE] tickArray0
 	//
-	// [17] = [WRITE] whirlpool
+	// [17] = [WRITE] tickArray1
 	//
-	// [18] = [WRITE] tickArray0
+	// [18] = [WRITE] tickArray2
 	//
-	// [19] = [WRITE] tickArray1
-	//
-	// [20] = [WRITE] tickArray2
-	//
-	// [21] = [] oracle
+	// [19] = [] oracle
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewDripOrcaWhirlpoolInstructionBuilder creates a new `DripOrcaWhirlpool` instruction builder.
 func NewDripOrcaWhirlpoolInstructionBuilder() *DripOrcaWhirlpool {
 	nd := &DripOrcaWhirlpool{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 22),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 20),
 	}
 	return nd
 }
@@ -122,191 +118,169 @@ func (inst *DripOrcaWhirlpool) GetCurrentVaultPeriodAccount() *ag_solanago.Accou
 	return inst.AccountMetaSlice.Get(4)
 }
 
-// SetTokenAMintAccount sets the "tokenAMint" account.
-func (inst *DripOrcaWhirlpool) SetTokenAMintAccount(tokenAMint ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[5] = ag_solanago.Meta(tokenAMint)
-	return inst
-}
-
-// GetTokenAMintAccount gets the "tokenAMint" account.
-func (inst *DripOrcaWhirlpool) GetTokenAMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(5)
-}
-
-// SetTokenBMintAccount sets the "tokenBMint" account.
-func (inst *DripOrcaWhirlpool) SetTokenBMintAccount(tokenBMint ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(tokenBMint)
-	return inst
-}
-
-// GetTokenBMintAccount gets the "tokenBMint" account.
-func (inst *DripOrcaWhirlpool) GetTokenBMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(6)
-}
-
 // SetVaultTokenAAccountAccount sets the "vaultTokenAAccount" account.
 func (inst *DripOrcaWhirlpool) SetVaultTokenAAccountAccount(vaultTokenAAccount ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[7] = ag_solanago.Meta(vaultTokenAAccount).WRITE()
+	inst.AccountMetaSlice[5] = ag_solanago.Meta(vaultTokenAAccount).WRITE()
 	return inst
 }
 
 // GetVaultTokenAAccountAccount gets the "vaultTokenAAccount" account.
 func (inst *DripOrcaWhirlpool) GetVaultTokenAAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(7)
+	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetVaultTokenBAccountAccount sets the "vaultTokenBAccount" account.
 func (inst *DripOrcaWhirlpool) SetVaultTokenBAccountAccount(vaultTokenBAccount ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[8] = ag_solanago.Meta(vaultTokenBAccount).WRITE()
+	inst.AccountMetaSlice[6] = ag_solanago.Meta(vaultTokenBAccount).WRITE()
 	return inst
 }
 
 // GetVaultTokenBAccountAccount gets the "vaultTokenBAccount" account.
 func (inst *DripOrcaWhirlpool) GetVaultTokenBAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(8)
+	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetSwapTokenAAccountAccount sets the "swapTokenAAccount" account.
 func (inst *DripOrcaWhirlpool) SetSwapTokenAAccountAccount(swapTokenAAccount ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[9] = ag_solanago.Meta(swapTokenAAccount).WRITE()
+	inst.AccountMetaSlice[7] = ag_solanago.Meta(swapTokenAAccount).WRITE()
 	return inst
 }
 
 // GetSwapTokenAAccountAccount gets the "swapTokenAAccount" account.
 func (inst *DripOrcaWhirlpool) GetSwapTokenAAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(9)
+	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetSwapTokenBAccountAccount sets the "swapTokenBAccount" account.
 func (inst *DripOrcaWhirlpool) SetSwapTokenBAccountAccount(swapTokenBAccount ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[10] = ag_solanago.Meta(swapTokenBAccount).WRITE()
+	inst.AccountMetaSlice[8] = ag_solanago.Meta(swapTokenBAccount).WRITE()
 	return inst
 }
 
 // GetSwapTokenBAccountAccount gets the "swapTokenBAccount" account.
 func (inst *DripOrcaWhirlpool) GetSwapTokenBAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(10)
+	return inst.AccountMetaSlice.Get(8)
 }
 
 // SetDripFeeTokenAAccountAccount sets the "dripFeeTokenAAccount" account.
 func (inst *DripOrcaWhirlpool) SetDripFeeTokenAAccountAccount(dripFeeTokenAAccount ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[11] = ag_solanago.Meta(dripFeeTokenAAccount).WRITE()
+	inst.AccountMetaSlice[9] = ag_solanago.Meta(dripFeeTokenAAccount).WRITE()
 	return inst
 }
 
 // GetDripFeeTokenAAccountAccount gets the "dripFeeTokenAAccount" account.
 func (inst *DripOrcaWhirlpool) GetDripFeeTokenAAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(11)
+	return inst.AccountMetaSlice.Get(9)
 }
 
 // SetTokenProgramAccount sets the "tokenProgram" account.
 func (inst *DripOrcaWhirlpool) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[12] = ag_solanago.Meta(tokenProgram)
+	inst.AccountMetaSlice[10] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "tokenProgram" account.
 func (inst *DripOrcaWhirlpool) GetTokenProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(12)
+	return inst.AccountMetaSlice.Get(10)
 }
 
 // SetAssociatedTokenProgramAccount sets the "associatedTokenProgram" account.
 func (inst *DripOrcaWhirlpool) SetAssociatedTokenProgramAccount(associatedTokenProgram ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[13] = ag_solanago.Meta(associatedTokenProgram)
+	inst.AccountMetaSlice[11] = ag_solanago.Meta(associatedTokenProgram)
 	return inst
 }
 
 // GetAssociatedTokenProgramAccount gets the "associatedTokenProgram" account.
 func (inst *DripOrcaWhirlpool) GetAssociatedTokenProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(13)
+	return inst.AccountMetaSlice.Get(11)
 }
 
 // SetWhirlpoolProgramAccount sets the "whirlpoolProgram" account.
 func (inst *DripOrcaWhirlpool) SetWhirlpoolProgramAccount(whirlpoolProgram ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[14] = ag_solanago.Meta(whirlpoolProgram)
+	inst.AccountMetaSlice[12] = ag_solanago.Meta(whirlpoolProgram)
 	return inst
 }
 
 // GetWhirlpoolProgramAccount gets the "whirlpoolProgram" account.
 func (inst *DripOrcaWhirlpool) GetWhirlpoolProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(14)
+	return inst.AccountMetaSlice.Get(12)
 }
 
 // SetSystemProgramAccount sets the "systemProgram" account.
 func (inst *DripOrcaWhirlpool) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[15] = ag_solanago.Meta(systemProgram)
+	inst.AccountMetaSlice[13] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "systemProgram" account.
 func (inst *DripOrcaWhirlpool) GetSystemProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(15)
+	return inst.AccountMetaSlice.Get(13)
 }
 
 // SetRentAccount sets the "rent" account.
 func (inst *DripOrcaWhirlpool) SetRentAccount(rent ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[16] = ag_solanago.Meta(rent)
+	inst.AccountMetaSlice[14] = ag_solanago.Meta(rent)
 	return inst
 }
 
 // GetRentAccount gets the "rent" account.
 func (inst *DripOrcaWhirlpool) GetRentAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(16)
+	return inst.AccountMetaSlice.Get(14)
 }
 
 // SetWhirlpoolAccount sets the "whirlpool" account.
 func (inst *DripOrcaWhirlpool) SetWhirlpoolAccount(whirlpool ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[17] = ag_solanago.Meta(whirlpool).WRITE()
+	inst.AccountMetaSlice[15] = ag_solanago.Meta(whirlpool).WRITE()
 	return inst
 }
 
 // GetWhirlpoolAccount gets the "whirlpool" account.
 func (inst *DripOrcaWhirlpool) GetWhirlpoolAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(17)
+	return inst.AccountMetaSlice.Get(15)
 }
 
 // SetTickArray0Account sets the "tickArray0" account.
 func (inst *DripOrcaWhirlpool) SetTickArray0Account(tickArray0 ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[18] = ag_solanago.Meta(tickArray0).WRITE()
+	inst.AccountMetaSlice[16] = ag_solanago.Meta(tickArray0).WRITE()
 	return inst
 }
 
 // GetTickArray0Account gets the "tickArray0" account.
 func (inst *DripOrcaWhirlpool) GetTickArray0Account() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(18)
+	return inst.AccountMetaSlice.Get(16)
 }
 
 // SetTickArray1Account sets the "tickArray1" account.
 func (inst *DripOrcaWhirlpool) SetTickArray1Account(tickArray1 ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[19] = ag_solanago.Meta(tickArray1).WRITE()
+	inst.AccountMetaSlice[17] = ag_solanago.Meta(tickArray1).WRITE()
 	return inst
 }
 
 // GetTickArray1Account gets the "tickArray1" account.
 func (inst *DripOrcaWhirlpool) GetTickArray1Account() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(19)
+	return inst.AccountMetaSlice.Get(17)
 }
 
 // SetTickArray2Account sets the "tickArray2" account.
 func (inst *DripOrcaWhirlpool) SetTickArray2Account(tickArray2 ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[20] = ag_solanago.Meta(tickArray2).WRITE()
+	inst.AccountMetaSlice[18] = ag_solanago.Meta(tickArray2).WRITE()
 	return inst
 }
 
 // GetTickArray2Account gets the "tickArray2" account.
 func (inst *DripOrcaWhirlpool) GetTickArray2Account() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(20)
+	return inst.AccountMetaSlice.Get(18)
 }
 
 // SetOracleAccount sets the "oracle" account.
 func (inst *DripOrcaWhirlpool) SetOracleAccount(oracle ag_solanago.PublicKey) *DripOrcaWhirlpool {
-	inst.AccountMetaSlice[21] = ag_solanago.Meta(oracle)
+	inst.AccountMetaSlice[19] = ag_solanago.Meta(oracle)
 	return inst
 }
 
 // GetOracleAccount gets the "oracle" account.
 func (inst *DripOrcaWhirlpool) GetOracleAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(21)
+	return inst.AccountMetaSlice.Get(19)
 }
 
 func (inst DripOrcaWhirlpool) Build() *Instruction {
@@ -345,54 +319,48 @@ func (inst *DripOrcaWhirlpool) Validate() error {
 			return errors.New("accounts.CurrentVaultPeriod is not set")
 		}
 		if inst.AccountMetaSlice[5] == nil {
-			return errors.New("accounts.TokenAMint is not set")
-		}
-		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.TokenBMint is not set")
-		}
-		if inst.AccountMetaSlice[7] == nil {
 			return errors.New("accounts.VaultTokenAAccount is not set")
 		}
-		if inst.AccountMetaSlice[8] == nil {
+		if inst.AccountMetaSlice[6] == nil {
 			return errors.New("accounts.VaultTokenBAccount is not set")
 		}
-		if inst.AccountMetaSlice[9] == nil {
+		if inst.AccountMetaSlice[7] == nil {
 			return errors.New("accounts.SwapTokenAAccount is not set")
 		}
-		if inst.AccountMetaSlice[10] == nil {
+		if inst.AccountMetaSlice[8] == nil {
 			return errors.New("accounts.SwapTokenBAccount is not set")
 		}
-		if inst.AccountMetaSlice[11] == nil {
+		if inst.AccountMetaSlice[9] == nil {
 			return errors.New("accounts.DripFeeTokenAAccount is not set")
 		}
-		if inst.AccountMetaSlice[12] == nil {
+		if inst.AccountMetaSlice[10] == nil {
 			return errors.New("accounts.TokenProgram is not set")
 		}
-		if inst.AccountMetaSlice[13] == nil {
+		if inst.AccountMetaSlice[11] == nil {
 			return errors.New("accounts.AssociatedTokenProgram is not set")
 		}
-		if inst.AccountMetaSlice[14] == nil {
+		if inst.AccountMetaSlice[12] == nil {
 			return errors.New("accounts.WhirlpoolProgram is not set")
 		}
-		if inst.AccountMetaSlice[15] == nil {
+		if inst.AccountMetaSlice[13] == nil {
 			return errors.New("accounts.SystemProgram is not set")
 		}
-		if inst.AccountMetaSlice[16] == nil {
+		if inst.AccountMetaSlice[14] == nil {
 			return errors.New("accounts.Rent is not set")
 		}
-		if inst.AccountMetaSlice[17] == nil {
+		if inst.AccountMetaSlice[15] == nil {
 			return errors.New("accounts.Whirlpool is not set")
 		}
-		if inst.AccountMetaSlice[18] == nil {
+		if inst.AccountMetaSlice[16] == nil {
 			return errors.New("accounts.TickArray0 is not set")
 		}
-		if inst.AccountMetaSlice[19] == nil {
+		if inst.AccountMetaSlice[17] == nil {
 			return errors.New("accounts.TickArray1 is not set")
 		}
-		if inst.AccountMetaSlice[20] == nil {
+		if inst.AccountMetaSlice[18] == nil {
 			return errors.New("accounts.TickArray2 is not set")
 		}
-		if inst.AccountMetaSlice[21] == nil {
+		if inst.AccountMetaSlice[19] == nil {
 			return errors.New("accounts.Oracle is not set")
 		}
 	}
@@ -411,29 +379,27 @@ func (inst *DripOrcaWhirlpool) EncodeToTree(parent ag_treeout.Branches) {
 					instructionBranch.Child("Params[len=0]").ParentFunc(func(paramsBranch ag_treeout.Branches) {})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=22]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+					instructionBranch.Child("Accounts[len=20]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
 						accountsBranch.Child(ag_format.Meta("     dripTriggerSource", inst.AccountMetaSlice.Get(0)))
 						accountsBranch.Child(ag_format.Meta("                 vault", inst.AccountMetaSlice.Get(1)))
 						accountsBranch.Child(ag_format.Meta("      vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
 						accountsBranch.Child(ag_format.Meta("       lastVaultPeriod", inst.AccountMetaSlice.Get(3)))
 						accountsBranch.Child(ag_format.Meta("    currentVaultPeriod", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("            tokenAMint", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("            tokenBMint", inst.AccountMetaSlice.Get(6)))
-						accountsBranch.Child(ag_format.Meta("           vaultTokenA", inst.AccountMetaSlice.Get(7)))
-						accountsBranch.Child(ag_format.Meta("           vaultTokenB", inst.AccountMetaSlice.Get(8)))
-						accountsBranch.Child(ag_format.Meta("            swapTokenA", inst.AccountMetaSlice.Get(9)))
-						accountsBranch.Child(ag_format.Meta("            swapTokenB", inst.AccountMetaSlice.Get(10)))
-						accountsBranch.Child(ag_format.Meta("         dripFeeTokenA", inst.AccountMetaSlice.Get(11)))
-						accountsBranch.Child(ag_format.Meta("          tokenProgram", inst.AccountMetaSlice.Get(12)))
-						accountsBranch.Child(ag_format.Meta("associatedTokenProgram", inst.AccountMetaSlice.Get(13)))
-						accountsBranch.Child(ag_format.Meta("      whirlpoolProgram", inst.AccountMetaSlice.Get(14)))
-						accountsBranch.Child(ag_format.Meta("         systemProgram", inst.AccountMetaSlice.Get(15)))
-						accountsBranch.Child(ag_format.Meta("                  rent", inst.AccountMetaSlice.Get(16)))
-						accountsBranch.Child(ag_format.Meta("             whirlpool", inst.AccountMetaSlice.Get(17)))
-						accountsBranch.Child(ag_format.Meta("            tickArray0", inst.AccountMetaSlice.Get(18)))
-						accountsBranch.Child(ag_format.Meta("            tickArray1", inst.AccountMetaSlice.Get(19)))
-						accountsBranch.Child(ag_format.Meta("            tickArray2", inst.AccountMetaSlice.Get(20)))
-						accountsBranch.Child(ag_format.Meta("                oracle", inst.AccountMetaSlice.Get(21)))
+						accountsBranch.Child(ag_format.Meta("           vaultTokenA", inst.AccountMetaSlice.Get(5)))
+						accountsBranch.Child(ag_format.Meta("           vaultTokenB", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("            swapTokenA", inst.AccountMetaSlice.Get(7)))
+						accountsBranch.Child(ag_format.Meta("            swapTokenB", inst.AccountMetaSlice.Get(8)))
+						accountsBranch.Child(ag_format.Meta("         dripFeeTokenA", inst.AccountMetaSlice.Get(9)))
+						accountsBranch.Child(ag_format.Meta("          tokenProgram", inst.AccountMetaSlice.Get(10)))
+						accountsBranch.Child(ag_format.Meta("associatedTokenProgram", inst.AccountMetaSlice.Get(11)))
+						accountsBranch.Child(ag_format.Meta("      whirlpoolProgram", inst.AccountMetaSlice.Get(12)))
+						accountsBranch.Child(ag_format.Meta("         systemProgram", inst.AccountMetaSlice.Get(13)))
+						accountsBranch.Child(ag_format.Meta("                  rent", inst.AccountMetaSlice.Get(14)))
+						accountsBranch.Child(ag_format.Meta("             whirlpool", inst.AccountMetaSlice.Get(15)))
+						accountsBranch.Child(ag_format.Meta("            tickArray0", inst.AccountMetaSlice.Get(16)))
+						accountsBranch.Child(ag_format.Meta("            tickArray1", inst.AccountMetaSlice.Get(17)))
+						accountsBranch.Child(ag_format.Meta("            tickArray2", inst.AccountMetaSlice.Get(18)))
+						accountsBranch.Child(ag_format.Meta("                oracle", inst.AccountMetaSlice.Get(19)))
 					})
 				})
 		})
@@ -454,8 +420,6 @@ func NewDripOrcaWhirlpoolInstruction(
 	vaultProtoConfig ag_solanago.PublicKey,
 	lastVaultPeriod ag_solanago.PublicKey,
 	currentVaultPeriod ag_solanago.PublicKey,
-	tokenAMint ag_solanago.PublicKey,
-	tokenBMint ag_solanago.PublicKey,
 	vaultTokenAAccount ag_solanago.PublicKey,
 	vaultTokenBAccount ag_solanago.PublicKey,
 	swapTokenAAccount ag_solanago.PublicKey,
@@ -477,8 +441,6 @@ func NewDripOrcaWhirlpoolInstruction(
 		SetVaultProtoConfigAccount(vaultProtoConfig).
 		SetLastVaultPeriodAccount(lastVaultPeriod).
 		SetCurrentVaultPeriodAccount(currentVaultPeriod).
-		SetTokenAMintAccount(tokenAMint).
-		SetTokenBMintAccount(tokenBMint).
 		SetVaultTokenAAccountAccount(vaultTokenAAccount).
 		SetVaultTokenBAccountAccount(vaultTokenBAccount).
 		SetSwapTokenAAccountAccount(swapTokenAAccount).

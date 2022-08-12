@@ -34,13 +34,13 @@ var (
 
 	Instruction_InitVaultPeriod = ag_binary.TypeID([8]byte{46, 103, 251, 142, 95, 43, 55, 27})
 
-	Instruction_ClosePosition = ag_binary.TypeID([8]byte{123, 134, 81, 0, 49, 68, 98, 98})
-
 	Instruction_Deposit = ag_binary.TypeID([8]byte{242, 35, 198, 137, 82, 225, 242, 182})
 
 	Instruction_DepositWithMetadata = ag_binary.TypeID([8]byte{66, 112, 168, 108, 67, 61, 27, 151})
 
 	Instruction_WithdrawB = ag_binary.TypeID([8]byte{28, 146, 254, 247, 183, 161, 195, 149})
+
+	Instruction_ClosePosition = ag_binary.TypeID([8]byte{123, 134, 81, 0, 49, 68, 98, 98})
 
 	Instruction_DripSplTokenSwap = ag_binary.TypeID([8]byte{129, 32, 61, 181, 42, 74, 219, 106})
 
@@ -56,14 +56,14 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "InitVault"
 	case Instruction_InitVaultPeriod:
 		return "InitVaultPeriod"
-	case Instruction_ClosePosition:
-		return "ClosePosition"
 	case Instruction_Deposit:
 		return "Deposit"
 	case Instruction_DepositWithMetadata:
 		return "DepositWithMetadata"
 	case Instruction_WithdrawB:
 		return "WithdrawB"
+	case Instruction_ClosePosition:
+		return "ClosePosition"
 	case Instruction_DripSplTokenSwap:
 		return "DripSplTokenSwap"
 	case Instruction_DripOrcaWhirlpool:
@@ -98,9 +98,6 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 			"init_vault_period", (*InitVaultPeriod)(nil),
 		},
 		{
-			"close_position", (*ClosePosition)(nil),
-		},
-		{
 			"deposit", (*Deposit)(nil),
 		},
 		{
@@ -108,6 +105,9 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 		},
 		{
 			"withdraw_b", (*WithdrawB)(nil),
+		},
+		{
+			"close_position", (*ClosePosition)(nil),
 		},
 		{
 			"drip_spl_token_swap", (*DripSplTokenSwap)(nil),

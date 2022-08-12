@@ -7,39 +7,6 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-type DepositParams struct {
-	TokenADepositAmount uint64
-	NumberOfSwaps       uint64
-}
-
-func (obj DepositParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `TokenADepositAmount` param:
-	err = encoder.Encode(obj.TokenADepositAmount)
-	if err != nil {
-		return err
-	}
-	// Serialize `NumberOfSwaps` param:
-	err = encoder.Encode(obj.NumberOfSwaps)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *DepositParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `TokenADepositAmount`:
-	err = decoder.Decode(&obj.TokenADepositAmount)
-	if err != nil {
-		return err
-	}
-	// Deserialize `NumberOfSwaps`:
-	err = decoder.Decode(&obj.NumberOfSwaps)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 type InitializeVaultPeriodParams struct {
 	PeriodId uint64
 }
@@ -144,6 +111,39 @@ func (obj *InitializeVaultParams) UnmarshalWithDecoder(decoder *ag_binary.Decode
 	}
 	// Deserialize `WhitelistedSwaps`:
 	err = decoder.Decode(&obj.WhitelistedSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type DepositParams struct {
+	TokenADepositAmount uint64
+	NumberOfSwaps       uint64
+}
+
+func (obj DepositParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `TokenADepositAmount` param:
+	err = encoder.Encode(obj.TokenADepositAmount)
+	if err != nil {
+		return err
+	}
+	// Serialize `NumberOfSwaps` param:
+	err = encoder.Encode(obj.NumberOfSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *DepositParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `TokenADepositAmount`:
+	err = decoder.Decode(&obj.TokenADepositAmount)
+	if err != nil {
+		return err
+	}
+	// Deserialize `NumberOfSwaps`:
+	err = decoder.Decode(&obj.NumberOfSwaps)
 	if err != nil {
 		return err
 	}
