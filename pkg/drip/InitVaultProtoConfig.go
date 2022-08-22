@@ -14,9 +14,9 @@ import (
 type InitVaultProtoConfig struct {
 	Params *InitVaultProtoConfigParams
 
-	// [0] = [WRITE, SIGNER] vaultProtoConfig
+	// [0] = [WRITE, SIGNER] creator
 	//
-	// [1] = [WRITE, SIGNER] creator
+	// [1] = [WRITE, SIGNER] vaultProtoConfig
 	//
 	// [2] = [] systemProgram
 	ag_solanago.AccountMetaSlice `bin:"-"`
@@ -36,25 +36,25 @@ func (inst *InitVaultProtoConfig) SetParams(params InitVaultProtoConfigParams) *
 	return inst
 }
 
-// SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
-func (inst *InitVaultProtoConfig) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *InitVaultProtoConfig {
-	inst.AccountMetaSlice[0] = ag_solanago.Meta(vaultProtoConfig).WRITE().SIGNER()
-	return inst
-}
-
-// GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
-func (inst *InitVaultProtoConfig) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(0)
-}
-
 // SetCreatorAccount sets the "creator" account.
 func (inst *InitVaultProtoConfig) SetCreatorAccount(creator ag_solanago.PublicKey) *InitVaultProtoConfig {
-	inst.AccountMetaSlice[1] = ag_solanago.Meta(creator).WRITE().SIGNER()
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(creator).WRITE().SIGNER()
 	return inst
 }
 
 // GetCreatorAccount gets the "creator" account.
 func (inst *InitVaultProtoConfig) GetCreatorAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(0)
+}
+
+// SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
+func (inst *InitVaultProtoConfig) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *InitVaultProtoConfig {
+	inst.AccountMetaSlice[1] = ag_solanago.Meta(vaultProtoConfig).WRITE().SIGNER()
+	return inst
+}
+
+// GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
+func (inst *InitVaultProtoConfig) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
@@ -97,10 +97,10 @@ func (inst *InitVaultProtoConfig) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
-			return errors.New("accounts.VaultProtoConfig is not set")
+			return errors.New("accounts.Creator is not set")
 		}
 		if inst.AccountMetaSlice[1] == nil {
-			return errors.New("accounts.Creator is not set")
+			return errors.New("accounts.VaultProtoConfig is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
 			return errors.New("accounts.SystemProgram is not set")
@@ -124,8 +124,8 @@ func (inst *InitVaultProtoConfig) EncodeToTree(parent ag_treeout.Branches) {
 
 					// Accounts of the instruction:
 					instructionBranch.Child("Accounts[len=3]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("vaultProtoConfig", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("         creator", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("         creator", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("vaultProtoConfig", inst.AccountMetaSlice.Get(1)))
 						accountsBranch.Child(ag_format.Meta("   systemProgram", inst.AccountMetaSlice.Get(2)))
 					})
 				})
@@ -154,12 +154,12 @@ func NewInitVaultProtoConfigInstruction(
 	// Parameters:
 	params InitVaultProtoConfigParams,
 	// Accounts:
-	vaultProtoConfig ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
+	vaultProtoConfig ag_solanago.PublicKey,
 	systemProgram ag_solanago.PublicKey) *InitVaultProtoConfig {
 	return NewInitVaultProtoConfigInstructionBuilder().
 		SetParams(params).
-		SetVaultProtoConfigAccount(vaultProtoConfig).
 		SetCreatorAccount(creator).
+		SetVaultProtoConfigAccount(vaultProtoConfig).
 		SetSystemProgramAccount(systemProgram)
 }
