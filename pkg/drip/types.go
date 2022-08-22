@@ -117,6 +117,28 @@ func (obj *InitializeVaultParams) UnmarshalWithDecoder(decoder *ag_binary.Decode
 	return nil
 }
 
+type UpdateVaultWhitelistedSwapsParams struct {
+	WhitelistedSwaps []ag_solanago.PublicKey
+}
+
+func (obj UpdateVaultWhitelistedSwapsParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `WhitelistedSwaps` param:
+	err = encoder.Encode(obj.WhitelistedSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *UpdateVaultWhitelistedSwapsParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `WhitelistedSwaps`:
+	err = decoder.Decode(&obj.WhitelistedSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type DepositParams struct {
 	TokenADepositAmount uint64
 	NumberOfSwaps       uint64

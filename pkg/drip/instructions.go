@@ -12,7 +12,7 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-var ProgramID ag_solanago.PublicKey = ag_solanago.MustPublicKeyFromBase58("dripTrkvSyQKvkyWg7oi4jmeEGMA5scSYowHArJ9Vwk")
+var ProgramID ag_solanago.PublicKey
 
 func SetProgramID(pubkey ag_solanago.PublicKey) {
 	ProgramID = pubkey
@@ -30,8 +30,6 @@ func init() {
 var (
 	Instruction_InitVaultProtoConfig = ag_binary.TypeID([8]byte{195, 96, 99, 29, 46, 21, 146, 219})
 
-	Instruction_InitVault = ag_binary.TypeID([8]byte{77, 79, 85, 150, 33, 217, 52, 106})
-
 	Instruction_InitVaultPeriod = ag_binary.TypeID([8]byte{46, 103, 251, 142, 95, 43, 55, 27})
 
 	Instruction_Deposit = ag_binary.TypeID([8]byte{242, 35, 198, 137, 82, 225, 242, 182})
@@ -45,6 +43,10 @@ var (
 	Instruction_DripSplTokenSwap = ag_binary.TypeID([8]byte{129, 32, 61, 181, 42, 74, 219, 106})
 
 	Instruction_DripOrcaWhirlpool = ag_binary.TypeID([8]byte{31, 217, 180, 147, 224, 40, 53, 88})
+
+	Instruction_InitVault = ag_binary.TypeID([8]byte{77, 79, 85, 150, 33, 217, 52, 106})
+
+	Instruction_UpdateVaultWhitelistedSwaps = ag_binary.TypeID([8]byte{117, 239, 168, 214, 21, 137, 26, 62})
 )
 
 // InstructionIDToName returns the name of the instruction given its ID.
@@ -52,8 +54,6 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 	switch id {
 	case Instruction_InitVaultProtoConfig:
 		return "InitVaultProtoConfig"
-	case Instruction_InitVault:
-		return "InitVault"
 	case Instruction_InitVaultPeriod:
 		return "InitVaultPeriod"
 	case Instruction_Deposit:
@@ -68,6 +68,10 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "DripSplTokenSwap"
 	case Instruction_DripOrcaWhirlpool:
 		return "DripOrcaWhirlpool"
+	case Instruction_InitVault:
+		return "InitVault"
+	case Instruction_UpdateVaultWhitelistedSwaps:
+		return "UpdateVaultWhitelistedSwaps"
 	default:
 		return ""
 	}
@@ -92,9 +96,6 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 			"init_vault_proto_config", (*InitVaultProtoConfig)(nil),
 		},
 		{
-			"init_vault", (*InitVault)(nil),
-		},
-		{
 			"init_vault_period", (*InitVaultPeriod)(nil),
 		},
 		{
@@ -114,6 +115,12 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 		},
 		{
 			"drip_orca_whirlpool", (*DripOrcaWhirlpool)(nil),
+		},
+		{
+			"init_vault", (*InitVault)(nil),
+		},
+		{
+			"update_vault_whitelisted_swaps", (*UpdateVaultWhitelistedSwaps)(nil),
 		},
 	},
 )

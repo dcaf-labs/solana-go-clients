@@ -14,21 +14,21 @@ import (
 type InitVault struct {
 	Params *InitializeVaultParams
 
-	// [0] = [WRITE] vault
+	// [0] = [WRITE, SIGNER] creator
 	//
-	// [1] = [] vaultProtoConfig
+	// [1] = [WRITE] vault
 	//
-	// [2] = [WRITE] tokenAAccount
+	// [2] = [] vaultProtoConfig
 	//
-	// [3] = [WRITE] tokenBAccount
+	// [3] = [WRITE] tokenAAccount
 	//
-	// [4] = [] treasuryTokenBAccount
+	// [4] = [WRITE] tokenBAccount
 	//
-	// [5] = [] tokenAMint
+	// [5] = [] treasuryTokenBAccount
 	//
-	// [6] = [] tokenBMint
+	// [6] = [] tokenAMint
 	//
-	// [7] = [WRITE, SIGNER] creator
+	// [7] = [] tokenBMint
 	//
 	// [8] = [] tokenProgram
 	//
@@ -54,91 +54,91 @@ func (inst *InitVault) SetParams(params InitializeVaultParams) *InitVault {
 	return inst
 }
 
-// SetVaultAccount sets the "vault" account.
-func (inst *InitVault) SetVaultAccount(vault ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[0] = ag_solanago.Meta(vault).WRITE()
-	return inst
-}
-
-// GetVaultAccount gets the "vault" account.
-func (inst *InitVault) GetVaultAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(0)
-}
-
-// SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
-func (inst *InitVault) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[1] = ag_solanago.Meta(vaultProtoConfig)
-	return inst
-}
-
-// GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
-func (inst *InitVault) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(1)
-}
-
-// SetTokenAAccountAccount sets the "tokenAAccount" account.
-func (inst *InitVault) SetTokenAAccountAccount(tokenAAccount ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[2] = ag_solanago.Meta(tokenAAccount).WRITE()
-	return inst
-}
-
-// GetTokenAAccountAccount gets the "tokenAAccount" account.
-func (inst *InitVault) GetTokenAAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(2)
-}
-
-// SetTokenBAccountAccount sets the "tokenBAccount" account.
-func (inst *InitVault) SetTokenBAccountAccount(tokenBAccount ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[3] = ag_solanago.Meta(tokenBAccount).WRITE()
-	return inst
-}
-
-// GetTokenBAccountAccount gets the "tokenBAccount" account.
-func (inst *InitVault) GetTokenBAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(3)
-}
-
-// SetTreasuryTokenBAccountAccount sets the "treasuryTokenBAccount" account.
-func (inst *InitVault) SetTreasuryTokenBAccountAccount(treasuryTokenBAccount ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[4] = ag_solanago.Meta(treasuryTokenBAccount)
-	return inst
-}
-
-// GetTreasuryTokenBAccountAccount gets the "treasuryTokenBAccount" account.
-func (inst *InitVault) GetTreasuryTokenBAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(4)
-}
-
-// SetTokenAMintAccount sets the "tokenAMint" account.
-func (inst *InitVault) SetTokenAMintAccount(tokenAMint ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[5] = ag_solanago.Meta(tokenAMint)
-	return inst
-}
-
-// GetTokenAMintAccount gets the "tokenAMint" account.
-func (inst *InitVault) GetTokenAMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(5)
-}
-
-// SetTokenBMintAccount sets the "tokenBMint" account.
-func (inst *InitVault) SetTokenBMintAccount(tokenBMint ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(tokenBMint)
-	return inst
-}
-
-// GetTokenBMintAccount gets the "tokenBMint" account.
-func (inst *InitVault) GetTokenBMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(6)
-}
-
 // SetCreatorAccount sets the "creator" account.
 func (inst *InitVault) SetCreatorAccount(creator ag_solanago.PublicKey) *InitVault {
-	inst.AccountMetaSlice[7] = ag_solanago.Meta(creator).WRITE().SIGNER()
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(creator).WRITE().SIGNER()
 	return inst
 }
 
 // GetCreatorAccount gets the "creator" account.
 func (inst *InitVault) GetCreatorAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(0)
+}
+
+// SetVaultAccount sets the "vault" account.
+func (inst *InitVault) SetVaultAccount(vault ag_solanago.PublicKey) *InitVault {
+	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault).WRITE()
+	return inst
+}
+
+// GetVaultAccount gets the "vault" account.
+func (inst *InitVault) GetVaultAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(1)
+}
+
+// SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
+func (inst *InitVault) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *InitVault {
+	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
+	return inst
+}
+
+// GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
+func (inst *InitVault) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(2)
+}
+
+// SetTokenAAccountAccount sets the "tokenAAccount" account.
+func (inst *InitVault) SetTokenAAccountAccount(tokenAAccount ag_solanago.PublicKey) *InitVault {
+	inst.AccountMetaSlice[3] = ag_solanago.Meta(tokenAAccount).WRITE()
+	return inst
+}
+
+// GetTokenAAccountAccount gets the "tokenAAccount" account.
+func (inst *InitVault) GetTokenAAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(3)
+}
+
+// SetTokenBAccountAccount sets the "tokenBAccount" account.
+func (inst *InitVault) SetTokenBAccountAccount(tokenBAccount ag_solanago.PublicKey) *InitVault {
+	inst.AccountMetaSlice[4] = ag_solanago.Meta(tokenBAccount).WRITE()
+	return inst
+}
+
+// GetTokenBAccountAccount gets the "tokenBAccount" account.
+func (inst *InitVault) GetTokenBAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(4)
+}
+
+// SetTreasuryTokenBAccountAccount sets the "treasuryTokenBAccount" account.
+func (inst *InitVault) SetTreasuryTokenBAccountAccount(treasuryTokenBAccount ag_solanago.PublicKey) *InitVault {
+	inst.AccountMetaSlice[5] = ag_solanago.Meta(treasuryTokenBAccount)
+	return inst
+}
+
+// GetTreasuryTokenBAccountAccount gets the "treasuryTokenBAccount" account.
+func (inst *InitVault) GetTreasuryTokenBAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(5)
+}
+
+// SetTokenAMintAccount sets the "tokenAMint" account.
+func (inst *InitVault) SetTokenAMintAccount(tokenAMint ag_solanago.PublicKey) *InitVault {
+	inst.AccountMetaSlice[6] = ag_solanago.Meta(tokenAMint)
+	return inst
+}
+
+// GetTokenAMintAccount gets the "tokenAMint" account.
+func (inst *InitVault) GetTokenAMintAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(6)
+}
+
+// SetTokenBMintAccount sets the "tokenBMint" account.
+func (inst *InitVault) SetTokenBMintAccount(tokenBMint ag_solanago.PublicKey) *InitVault {
+	inst.AccountMetaSlice[7] = ag_solanago.Meta(tokenBMint)
+	return inst
+}
+
+// GetTokenBMintAccount gets the "tokenBMint" account.
+func (inst *InitVault) GetTokenBMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
@@ -214,28 +214,28 @@ func (inst *InitVault) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
-			return errors.New("accounts.Vault is not set")
+			return errors.New("accounts.Creator is not set")
 		}
 		if inst.AccountMetaSlice[1] == nil {
-			return errors.New("accounts.VaultProtoConfig is not set")
+			return errors.New("accounts.Vault is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
-			return errors.New("accounts.TokenAAccount is not set")
+			return errors.New("accounts.VaultProtoConfig is not set")
 		}
 		if inst.AccountMetaSlice[3] == nil {
-			return errors.New("accounts.TokenBAccount is not set")
+			return errors.New("accounts.TokenAAccount is not set")
 		}
 		if inst.AccountMetaSlice[4] == nil {
-			return errors.New("accounts.TreasuryTokenBAccount is not set")
+			return errors.New("accounts.TokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[5] == nil {
-			return errors.New("accounts.TokenAMint is not set")
+			return errors.New("accounts.TreasuryTokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.TokenBMint is not set")
+			return errors.New("accounts.TokenAMint is not set")
 		}
 		if inst.AccountMetaSlice[7] == nil {
-			return errors.New("accounts.Creator is not set")
+			return errors.New("accounts.TokenBMint is not set")
 		}
 		if inst.AccountMetaSlice[8] == nil {
 			return errors.New("accounts.TokenProgram is not set")
@@ -268,14 +268,14 @@ func (inst *InitVault) EncodeToTree(parent ag_treeout.Branches) {
 
 					// Accounts of the instruction:
 					instructionBranch.Child("Accounts[len=12]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("                 vault", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("      vaultProtoConfig", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("                tokenA", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("                tokenB", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("        treasuryTokenB", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("            tokenAMint", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("            tokenBMint", inst.AccountMetaSlice.Get(6)))
-						accountsBranch.Child(ag_format.Meta("               creator", inst.AccountMetaSlice.Get(7)))
+						accountsBranch.Child(ag_format.Meta("               creator", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("                 vault", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("      vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("                tokenA", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta("                tokenB", inst.AccountMetaSlice.Get(4)))
+						accountsBranch.Child(ag_format.Meta("        treasuryTokenB", inst.AccountMetaSlice.Get(5)))
+						accountsBranch.Child(ag_format.Meta("            tokenAMint", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("            tokenBMint", inst.AccountMetaSlice.Get(7)))
 						accountsBranch.Child(ag_format.Meta("          tokenProgram", inst.AccountMetaSlice.Get(8)))
 						accountsBranch.Child(ag_format.Meta("associatedTokenProgram", inst.AccountMetaSlice.Get(9)))
 						accountsBranch.Child(ag_format.Meta("         systemProgram", inst.AccountMetaSlice.Get(10)))
@@ -307,6 +307,7 @@ func NewInitVaultInstruction(
 	// Parameters:
 	params InitializeVaultParams,
 	// Accounts:
+	creator ag_solanago.PublicKey,
 	vault ag_solanago.PublicKey,
 	vaultProtoConfig ag_solanago.PublicKey,
 	tokenAAccount ag_solanago.PublicKey,
@@ -314,13 +315,13 @@ func NewInitVaultInstruction(
 	treasuryTokenBAccount ag_solanago.PublicKey,
 	tokenAMint ag_solanago.PublicKey,
 	tokenBMint ag_solanago.PublicKey,
-	creator ag_solanago.PublicKey,
 	tokenProgram ag_solanago.PublicKey,
 	associatedTokenProgram ag_solanago.PublicKey,
 	systemProgram ag_solanago.PublicKey,
 	rent ag_solanago.PublicKey) *InitVault {
 	return NewInitVaultInstructionBuilder().
 		SetParams(params).
+		SetCreatorAccount(creator).
 		SetVaultAccount(vault).
 		SetVaultProtoConfigAccount(vaultProtoConfig).
 		SetTokenAAccountAccount(tokenAAccount).
@@ -328,7 +329,6 @@ func NewInitVaultInstruction(
 		SetTreasuryTokenBAccountAccount(treasuryTokenBAccount).
 		SetTokenAMintAccount(tokenAMint).
 		SetTokenBMintAccount(tokenBMint).
-		SetCreatorAccount(creator).
 		SetTokenProgramAccount(tokenProgram).
 		SetAssociatedTokenProgramAccount(associatedTokenProgram).
 		SetSystemProgramAccount(systemProgram).

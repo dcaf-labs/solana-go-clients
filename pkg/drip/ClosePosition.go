@@ -13,19 +13,19 @@ import (
 // ClosePosition is the `closePosition` instruction.
 type ClosePosition struct {
 
-	// [0] = [WRITE] vault
+	// [0] = [SIGNER] withdrawer
 	//
-	// [1] = [] vaultProtoConfig
+	// [1] = [WRITE] vault
 	//
-	// [2] = [] vaultPeriodI
+	// [2] = [] vaultProtoConfig
 	//
-	// [3] = [] vaultPeriodJ
+	// [3] = [] vaultPeriodI
 	//
-	// [4] = [WRITE] vaultPeriodUserExpiry
+	// [4] = [] vaultPeriodJ
 	//
 	// [5] = [WRITE] userPosition
 	//
-	// [6] = [WRITE] vaultTokenAAccount
+	// [6] = [WRITE] userPositionNftAccount
 	//
 	// [7] = [WRITE] vaultTokenBAccount
 	//
@@ -33,84 +33,80 @@ type ClosePosition struct {
 	//
 	// [9] = [WRITE] userTokenBAccount
 	//
-	// [10] = [WRITE] userTokenAAccount
+	// [10] = [] tokenProgram
 	//
-	// [11] = [WRITE] userPositionNftAccount
+	// [11] = [] systemProgram
 	//
-	// [12] = [WRITE] userPositionNftMint
+	// [12] = [WRITE] vaultPeriodUserExpiry
 	//
-	// [13] = [] tokenAMint
+	// [13] = [WRITE] vaultTokenAAccount
 	//
-	// [14] = [] tokenBMint
+	// [14] = [WRITE] userTokenAAccount
 	//
-	// [15] = [SIGNER] withdrawer
-	//
-	// [16] = [] tokenProgram
-	//
-	// [17] = [] systemProgram
+	// [15] = [WRITE] userPositionNftMint
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewClosePositionInstructionBuilder creates a new `ClosePosition` instruction builder.
 func NewClosePositionInstructionBuilder() *ClosePosition {
 	nd := &ClosePosition{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 18),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 16),
 	}
 	return nd
 }
 
+// SetWithdrawerAccount sets the "withdrawer" account.
+func (inst *ClosePosition) SetWithdrawerAccount(withdrawer ag_solanago.PublicKey) *ClosePosition {
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(withdrawer).SIGNER()
+	return inst
+}
+
+// GetWithdrawerAccount gets the "withdrawer" account.
+func (inst *ClosePosition) GetWithdrawerAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(0)
+}
+
 // SetVaultAccount sets the "vault" account.
 func (inst *ClosePosition) SetVaultAccount(vault ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[0] = ag_solanago.Meta(vault).WRITE()
+	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault).WRITE()
 	return inst
 }
 
 // GetVaultAccount gets the "vault" account.
 func (inst *ClosePosition) GetVaultAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(0)
+	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
 func (inst *ClosePosition) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[1] = ag_solanago.Meta(vaultProtoConfig)
+	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
 	return inst
 }
 
 // GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
 func (inst *ClosePosition) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(1)
+	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetVaultPeriodIAccount sets the "vaultPeriodI" account.
 func (inst *ClosePosition) SetVaultPeriodIAccount(vaultPeriodI ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultPeriodI)
+	inst.AccountMetaSlice[3] = ag_solanago.Meta(vaultPeriodI)
 	return inst
 }
 
 // GetVaultPeriodIAccount gets the "vaultPeriodI" account.
 func (inst *ClosePosition) GetVaultPeriodIAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(2)
+	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetVaultPeriodJAccount sets the "vaultPeriodJ" account.
 func (inst *ClosePosition) SetVaultPeriodJAccount(vaultPeriodJ ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[3] = ag_solanago.Meta(vaultPeriodJ)
+	inst.AccountMetaSlice[4] = ag_solanago.Meta(vaultPeriodJ)
 	return inst
 }
 
 // GetVaultPeriodJAccount gets the "vaultPeriodJ" account.
 func (inst *ClosePosition) GetVaultPeriodJAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(3)
-}
-
-// SetVaultPeriodUserExpiryAccount sets the "vaultPeriodUserExpiry" account.
-func (inst *ClosePosition) SetVaultPeriodUserExpiryAccount(vaultPeriodUserExpiry ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[4] = ag_solanago.Meta(vaultPeriodUserExpiry).WRITE()
-	return inst
-}
-
-// GetVaultPeriodUserExpiryAccount gets the "vaultPeriodUserExpiry" account.
-func (inst *ClosePosition) GetVaultPeriodUserExpiryAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
@@ -125,14 +121,14 @@ func (inst *ClosePosition) GetUserPositionAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
-// SetVaultTokenAAccountAccount sets the "vaultTokenAAccount" account.
-func (inst *ClosePosition) SetVaultTokenAAccountAccount(vaultTokenAAccount ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(vaultTokenAAccount).WRITE()
+// SetUserPositionNftAccountAccount sets the "userPositionNftAccount" account.
+func (inst *ClosePosition) SetUserPositionNftAccountAccount(userPositionNftAccount ag_solanago.PublicKey) *ClosePosition {
+	inst.AccountMetaSlice[6] = ag_solanago.Meta(userPositionNftAccount).WRITE()
 	return inst
 }
 
-// GetVaultTokenAAccountAccount gets the "vaultTokenAAccount" account.
-func (inst *ClosePosition) GetVaultTokenAAccountAccount() *ag_solanago.AccountMeta {
+// GetUserPositionNftAccountAccount gets the "userPositionNftAccount" account.
+func (inst *ClosePosition) GetUserPositionNftAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
@@ -169,92 +165,70 @@ func (inst *ClosePosition) GetUserTokenBAccountAccount() *ag_solanago.AccountMet
 	return inst.AccountMetaSlice.Get(9)
 }
 
-// SetUserTokenAAccountAccount sets the "userTokenAAccount" account.
-func (inst *ClosePosition) SetUserTokenAAccountAccount(userTokenAAccount ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[10] = ag_solanago.Meta(userTokenAAccount).WRITE()
-	return inst
-}
-
-// GetUserTokenAAccountAccount gets the "userTokenAAccount" account.
-func (inst *ClosePosition) GetUserTokenAAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(10)
-}
-
-// SetUserPositionNftAccountAccount sets the "userPositionNftAccount" account.
-func (inst *ClosePosition) SetUserPositionNftAccountAccount(userPositionNftAccount ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[11] = ag_solanago.Meta(userPositionNftAccount).WRITE()
-	return inst
-}
-
-// GetUserPositionNftAccountAccount gets the "userPositionNftAccount" account.
-func (inst *ClosePosition) GetUserPositionNftAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(11)
-}
-
-// SetUserPositionNftMintAccount sets the "userPositionNftMint" account.
-func (inst *ClosePosition) SetUserPositionNftMintAccount(userPositionNftMint ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[12] = ag_solanago.Meta(userPositionNftMint).WRITE()
-	return inst
-}
-
-// GetUserPositionNftMintAccount gets the "userPositionNftMint" account.
-func (inst *ClosePosition) GetUserPositionNftMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(12)
-}
-
-// SetTokenAMintAccount sets the "tokenAMint" account.
-func (inst *ClosePosition) SetTokenAMintAccount(tokenAMint ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[13] = ag_solanago.Meta(tokenAMint)
-	return inst
-}
-
-// GetTokenAMintAccount gets the "tokenAMint" account.
-func (inst *ClosePosition) GetTokenAMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(13)
-}
-
-// SetTokenBMintAccount sets the "tokenBMint" account.
-func (inst *ClosePosition) SetTokenBMintAccount(tokenBMint ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[14] = ag_solanago.Meta(tokenBMint)
-	return inst
-}
-
-// GetTokenBMintAccount gets the "tokenBMint" account.
-func (inst *ClosePosition) GetTokenBMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(14)
-}
-
-// SetWithdrawerAccount sets the "withdrawer" account.
-func (inst *ClosePosition) SetWithdrawerAccount(withdrawer ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[15] = ag_solanago.Meta(withdrawer).SIGNER()
-	return inst
-}
-
-// GetWithdrawerAccount gets the "withdrawer" account.
-func (inst *ClosePosition) GetWithdrawerAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(15)
-}
-
 // SetTokenProgramAccount sets the "tokenProgram" account.
 func (inst *ClosePosition) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[16] = ag_solanago.Meta(tokenProgram)
+	inst.AccountMetaSlice[10] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "tokenProgram" account.
 func (inst *ClosePosition) GetTokenProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(16)
+	return inst.AccountMetaSlice.Get(10)
 }
 
 // SetSystemProgramAccount sets the "systemProgram" account.
 func (inst *ClosePosition) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *ClosePosition {
-	inst.AccountMetaSlice[17] = ag_solanago.Meta(systemProgram)
+	inst.AccountMetaSlice[11] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "systemProgram" account.
 func (inst *ClosePosition) GetSystemProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(17)
+	return inst.AccountMetaSlice.Get(11)
+}
+
+// SetVaultPeriodUserExpiryAccount sets the "vaultPeriodUserExpiry" account.
+func (inst *ClosePosition) SetVaultPeriodUserExpiryAccount(vaultPeriodUserExpiry ag_solanago.PublicKey) *ClosePosition {
+	inst.AccountMetaSlice[12] = ag_solanago.Meta(vaultPeriodUserExpiry).WRITE()
+	return inst
+}
+
+// GetVaultPeriodUserExpiryAccount gets the "vaultPeriodUserExpiry" account.
+func (inst *ClosePosition) GetVaultPeriodUserExpiryAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(12)
+}
+
+// SetVaultTokenAAccountAccount sets the "vaultTokenAAccount" account.
+func (inst *ClosePosition) SetVaultTokenAAccountAccount(vaultTokenAAccount ag_solanago.PublicKey) *ClosePosition {
+	inst.AccountMetaSlice[13] = ag_solanago.Meta(vaultTokenAAccount).WRITE()
+	return inst
+}
+
+// GetVaultTokenAAccountAccount gets the "vaultTokenAAccount" account.
+func (inst *ClosePosition) GetVaultTokenAAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(13)
+}
+
+// SetUserTokenAAccountAccount sets the "userTokenAAccount" account.
+func (inst *ClosePosition) SetUserTokenAAccountAccount(userTokenAAccount ag_solanago.PublicKey) *ClosePosition {
+	inst.AccountMetaSlice[14] = ag_solanago.Meta(userTokenAAccount).WRITE()
+	return inst
+}
+
+// GetUserTokenAAccountAccount gets the "userTokenAAccount" account.
+func (inst *ClosePosition) GetUserTokenAAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(14)
+}
+
+// SetUserPositionNftMintAccount sets the "userPositionNftMint" account.
+func (inst *ClosePosition) SetUserPositionNftMintAccount(userPositionNftMint ag_solanago.PublicKey) *ClosePosition {
+	inst.AccountMetaSlice[15] = ag_solanago.Meta(userPositionNftMint).WRITE()
+	return inst
+}
+
+// GetUserPositionNftMintAccount gets the "userPositionNftMint" account.
+func (inst *ClosePosition) GetUserPositionNftMintAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(15)
 }
 
 func (inst ClosePosition) Build() *Instruction {
@@ -278,25 +252,25 @@ func (inst *ClosePosition) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
-			return errors.New("accounts.Vault is not set")
+			return errors.New("accounts.Withdrawer is not set")
 		}
 		if inst.AccountMetaSlice[1] == nil {
-			return errors.New("accounts.VaultProtoConfig is not set")
+			return errors.New("accounts.Vault is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
-			return errors.New("accounts.VaultPeriodI is not set")
+			return errors.New("accounts.VaultProtoConfig is not set")
 		}
 		if inst.AccountMetaSlice[3] == nil {
-			return errors.New("accounts.VaultPeriodJ is not set")
+			return errors.New("accounts.VaultPeriodI is not set")
 		}
 		if inst.AccountMetaSlice[4] == nil {
-			return errors.New("accounts.VaultPeriodUserExpiry is not set")
+			return errors.New("accounts.VaultPeriodJ is not set")
 		}
 		if inst.AccountMetaSlice[5] == nil {
 			return errors.New("accounts.UserPosition is not set")
 		}
 		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.VaultTokenAAccount is not set")
+			return errors.New("accounts.UserPositionNftAccount is not set")
 		}
 		if inst.AccountMetaSlice[7] == nil {
 			return errors.New("accounts.VaultTokenBAccount is not set")
@@ -308,28 +282,22 @@ func (inst *ClosePosition) Validate() error {
 			return errors.New("accounts.UserTokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[10] == nil {
-			return errors.New("accounts.UserTokenAAccount is not set")
-		}
-		if inst.AccountMetaSlice[11] == nil {
-			return errors.New("accounts.UserPositionNftAccount is not set")
-		}
-		if inst.AccountMetaSlice[12] == nil {
-			return errors.New("accounts.UserPositionNftMint is not set")
-		}
-		if inst.AccountMetaSlice[13] == nil {
-			return errors.New("accounts.TokenAMint is not set")
-		}
-		if inst.AccountMetaSlice[14] == nil {
-			return errors.New("accounts.TokenBMint is not set")
-		}
-		if inst.AccountMetaSlice[15] == nil {
-			return errors.New("accounts.Withdrawer is not set")
-		}
-		if inst.AccountMetaSlice[16] == nil {
 			return errors.New("accounts.TokenProgram is not set")
 		}
-		if inst.AccountMetaSlice[17] == nil {
+		if inst.AccountMetaSlice[11] == nil {
 			return errors.New("accounts.SystemProgram is not set")
+		}
+		if inst.AccountMetaSlice[12] == nil {
+			return errors.New("accounts.VaultPeriodUserExpiry is not set")
+		}
+		if inst.AccountMetaSlice[13] == nil {
+			return errors.New("accounts.VaultTokenAAccount is not set")
+		}
+		if inst.AccountMetaSlice[14] == nil {
+			return errors.New("accounts.UserTokenAAccount is not set")
+		}
+		if inst.AccountMetaSlice[15] == nil {
+			return errors.New("accounts.UserPositionNftMint is not set")
 		}
 	}
 	return nil
@@ -347,25 +315,23 @@ func (inst *ClosePosition) EncodeToTree(parent ag_treeout.Branches) {
 					instructionBranch.Child("Params[len=0]").ParentFunc(func(paramsBranch ag_treeout.Branches) {})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=18]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("                vault", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("     vaultProtoConfig", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("         vaultPeriodI", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("         vaultPeriodJ", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("vaultPeriodUserExpiry", inst.AccountMetaSlice.Get(4)))
+					instructionBranch.Child("Accounts[len=16]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+						accountsBranch.Child(ag_format.Meta("           withdrawer", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("                vault", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("     vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("         vaultPeriodI", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta("         vaultPeriodJ", inst.AccountMetaSlice.Get(4)))
 						accountsBranch.Child(ag_format.Meta("         userPosition", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("          vaultTokenA", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("      userPositionNft", inst.AccountMetaSlice.Get(6)))
 						accountsBranch.Child(ag_format.Meta("          vaultTokenB", inst.AccountMetaSlice.Get(7)))
 						accountsBranch.Child(ag_format.Meta("  vaultTreasuryTokenB", inst.AccountMetaSlice.Get(8)))
 						accountsBranch.Child(ag_format.Meta("           userTokenB", inst.AccountMetaSlice.Get(9)))
-						accountsBranch.Child(ag_format.Meta("           userTokenA", inst.AccountMetaSlice.Get(10)))
-						accountsBranch.Child(ag_format.Meta("      userPositionNft", inst.AccountMetaSlice.Get(11)))
-						accountsBranch.Child(ag_format.Meta("  userPositionNftMint", inst.AccountMetaSlice.Get(12)))
-						accountsBranch.Child(ag_format.Meta("           tokenAMint", inst.AccountMetaSlice.Get(13)))
-						accountsBranch.Child(ag_format.Meta("           tokenBMint", inst.AccountMetaSlice.Get(14)))
-						accountsBranch.Child(ag_format.Meta("           withdrawer", inst.AccountMetaSlice.Get(15)))
-						accountsBranch.Child(ag_format.Meta("         tokenProgram", inst.AccountMetaSlice.Get(16)))
-						accountsBranch.Child(ag_format.Meta("        systemProgram", inst.AccountMetaSlice.Get(17)))
+						accountsBranch.Child(ag_format.Meta("         tokenProgram", inst.AccountMetaSlice.Get(10)))
+						accountsBranch.Child(ag_format.Meta("        systemProgram", inst.AccountMetaSlice.Get(11)))
+						accountsBranch.Child(ag_format.Meta("vaultPeriodUserExpiry", inst.AccountMetaSlice.Get(12)))
+						accountsBranch.Child(ag_format.Meta("          vaultTokenA", inst.AccountMetaSlice.Get(13)))
+						accountsBranch.Child(ag_format.Meta("           userTokenA", inst.AccountMetaSlice.Get(14)))
+						accountsBranch.Child(ag_format.Meta("  userPositionNftMint", inst.AccountMetaSlice.Get(15)))
 					})
 				})
 		})
@@ -381,41 +347,37 @@ func (obj *ClosePosition) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 // NewClosePositionInstruction declares a new ClosePosition instruction with the provided parameters and accounts.
 func NewClosePositionInstruction(
 	// Accounts:
+	withdrawer ag_solanago.PublicKey,
 	vault ag_solanago.PublicKey,
 	vaultProtoConfig ag_solanago.PublicKey,
 	vaultPeriodI ag_solanago.PublicKey,
 	vaultPeriodJ ag_solanago.PublicKey,
-	vaultPeriodUserExpiry ag_solanago.PublicKey,
 	userPosition ag_solanago.PublicKey,
-	vaultTokenAAccount ag_solanago.PublicKey,
+	userPositionNftAccount ag_solanago.PublicKey,
 	vaultTokenBAccount ag_solanago.PublicKey,
 	vaultTreasuryTokenBAccount ag_solanago.PublicKey,
 	userTokenBAccount ag_solanago.PublicKey,
-	userTokenAAccount ag_solanago.PublicKey,
-	userPositionNftAccount ag_solanago.PublicKey,
-	userPositionNftMint ag_solanago.PublicKey,
-	tokenAMint ag_solanago.PublicKey,
-	tokenBMint ag_solanago.PublicKey,
-	withdrawer ag_solanago.PublicKey,
 	tokenProgram ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey) *ClosePosition {
+	systemProgram ag_solanago.PublicKey,
+	vaultPeriodUserExpiry ag_solanago.PublicKey,
+	vaultTokenAAccount ag_solanago.PublicKey,
+	userTokenAAccount ag_solanago.PublicKey,
+	userPositionNftMint ag_solanago.PublicKey) *ClosePosition {
 	return NewClosePositionInstructionBuilder().
+		SetWithdrawerAccount(withdrawer).
 		SetVaultAccount(vault).
 		SetVaultProtoConfigAccount(vaultProtoConfig).
 		SetVaultPeriodIAccount(vaultPeriodI).
 		SetVaultPeriodJAccount(vaultPeriodJ).
-		SetVaultPeriodUserExpiryAccount(vaultPeriodUserExpiry).
 		SetUserPositionAccount(userPosition).
-		SetVaultTokenAAccountAccount(vaultTokenAAccount).
+		SetUserPositionNftAccountAccount(userPositionNftAccount).
 		SetVaultTokenBAccountAccount(vaultTokenBAccount).
 		SetVaultTreasuryTokenBAccountAccount(vaultTreasuryTokenBAccount).
 		SetUserTokenBAccountAccount(userTokenBAccount).
-		SetUserTokenAAccountAccount(userTokenAAccount).
-		SetUserPositionNftAccountAccount(userPositionNftAccount).
-		SetUserPositionNftMintAccount(userPositionNftMint).
-		SetTokenAMintAccount(tokenAMint).
-		SetTokenBMintAccount(tokenBMint).
-		SetWithdrawerAccount(withdrawer).
 		SetTokenProgramAccount(tokenProgram).
-		SetSystemProgramAccount(systemProgram)
+		SetSystemProgramAccount(systemProgram).
+		SetVaultPeriodUserExpiryAccount(vaultPeriodUserExpiry).
+		SetVaultTokenAAccountAccount(vaultTokenAAccount).
+		SetUserTokenAAccountAccount(userTokenAAccount).
+		SetUserPositionNftMintAccount(userPositionNftMint)
 }
