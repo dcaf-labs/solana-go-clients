@@ -12,11 +12,11 @@ import (
 
 // Swap is the `swap` instruction.
 type Swap struct {
-	Amount                 *uint64
-	OtherAmountThreshold   *uint64
-	SqrtPriceLimit         *ag_binary.Uint128
-	AmountSpecifiedIsInput *bool
-	AToB                   *bool
+	Amount               *uint64
+	OtherAmountThreshold *uint64
+	SqrtPriceLimit       *ag_binary.Uint128
+	ExactInput           *bool
+	AToB                 *bool
 
 	// [0] = [] tokenProgram
 	//
@@ -68,9 +68,9 @@ func (inst *Swap) SetSqrtPriceLimit(sqrtPriceLimit ag_binary.Uint128) *Swap {
 	return inst
 }
 
-// SetAmountSpecifiedIsInput sets the "amountSpecifiedIsInput" parameter.
-func (inst *Swap) SetAmountSpecifiedIsInput(amountSpecifiedIsInput bool) *Swap {
-	inst.AmountSpecifiedIsInput = &amountSpecifiedIsInput
+// SetExactInput sets the "exactInput" parameter.
+func (inst *Swap) SetExactInput(exactInput bool) *Swap {
+	inst.ExactInput = &exactInput
 	return inst
 }
 
@@ -230,8 +230,8 @@ func (inst *Swap) Validate() error {
 		if inst.SqrtPriceLimit == nil {
 			return errors.New("SqrtPriceLimit parameter is not set")
 		}
-		if inst.AmountSpecifiedIsInput == nil {
-			return errors.New("AmountSpecifiedIsInput parameter is not set")
+		if inst.ExactInput == nil {
+			return errors.New("ExactInput parameter is not set")
 		}
 		if inst.AToB == nil {
 			return errors.New("AToB parameter is not set")
@@ -287,11 +287,11 @@ func (inst *Swap) EncodeToTree(parent ag_treeout.Branches) {
 
 					// Parameters of the instruction:
 					instructionBranch.Child("Params[len=5]").ParentFunc(func(paramsBranch ag_treeout.Branches) {
-						paramsBranch.Child(ag_format.Param("                Amount", *inst.Amount))
-						paramsBranch.Child(ag_format.Param("  OtherAmountThreshold", *inst.OtherAmountThreshold))
-						paramsBranch.Child(ag_format.Param("        SqrtPriceLimit", *inst.SqrtPriceLimit))
-						paramsBranch.Child(ag_format.Param("AmountSpecifiedIsInput", *inst.AmountSpecifiedIsInput))
-						paramsBranch.Child(ag_format.Param("                  AToB", *inst.AToB))
+						paramsBranch.Child(ag_format.Param("              Amount", *inst.Amount))
+						paramsBranch.Child(ag_format.Param("OtherAmountThreshold", *inst.OtherAmountThreshold))
+						paramsBranch.Child(ag_format.Param("      SqrtPriceLimit", *inst.SqrtPriceLimit))
+						paramsBranch.Child(ag_format.Param("          ExactInput", *inst.ExactInput))
+						paramsBranch.Child(ag_format.Param("                AToB", *inst.AToB))
 					})
 
 					// Accounts of the instruction:
@@ -328,8 +328,8 @@ func (obj Swap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	if err != nil {
 		return err
 	}
-	// Serialize `AmountSpecifiedIsInput` param:
-	err = encoder.Encode(obj.AmountSpecifiedIsInput)
+	// Serialize `ExactInput` param:
+	err = encoder.Encode(obj.ExactInput)
 	if err != nil {
 		return err
 	}
@@ -356,8 +356,8 @@ func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	if err != nil {
 		return err
 	}
-	// Deserialize `AmountSpecifiedIsInput`:
-	err = decoder.Decode(&obj.AmountSpecifiedIsInput)
+	// Deserialize `ExactInput`:
+	err = decoder.Decode(&obj.ExactInput)
 	if err != nil {
 		return err
 	}
@@ -375,7 +375,7 @@ func NewSwapInstruction(
 	amount uint64,
 	otherAmountThreshold uint64,
 	sqrtPriceLimit ag_binary.Uint128,
-	amountSpecifiedIsInput bool,
+	exactInput bool,
 	aToB bool,
 	// Accounts:
 	tokenProgram ag_solanago.PublicKey,
@@ -393,7 +393,7 @@ func NewSwapInstruction(
 		SetAmount(amount).
 		SetOtherAmountThreshold(otherAmountThreshold).
 		SetSqrtPriceLimit(sqrtPriceLimit).
-		SetAmountSpecifiedIsInput(amountSpecifiedIsInput).
+		SetExactInput(exactInput).
 		SetAToB(aToB).
 		SetTokenProgramAccount(tokenProgram).
 		SetTokenAuthorityAccount(tokenAuthority).
