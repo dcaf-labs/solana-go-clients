@@ -12,7 +12,7 @@ import (
 
 // InitVaultProtoConfig is the `initVaultProtoConfig` instruction.
 type InitVaultProtoConfig struct {
-	Params *InitVaultProtoConfigParams
+	Params *InitializeVaultProtoConfigParams
 
 	// [0] = [WRITE, SIGNER] creator
 	//
@@ -31,7 +31,7 @@ func NewInitVaultProtoConfigInstructionBuilder() *InitVaultProtoConfig {
 }
 
 // SetParams sets the "params" parameter.
-func (inst *InitVaultProtoConfig) SetParams(params InitVaultProtoConfigParams) *InitVaultProtoConfig {
+func (inst *InitVaultProtoConfig) SetParams(params InitializeVaultProtoConfigParams) *InitVaultProtoConfig {
 	inst.Params = &params
 	return inst
 }
@@ -152,7 +152,7 @@ func (obj *InitVaultProtoConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 // NewInitVaultProtoConfigInstruction declares a new InitVaultProtoConfig instruction with the provided parameters and accounts.
 func NewInitVaultProtoConfigInstruction(
 	// Parameters:
-	params InitVaultProtoConfigParams,
+	params InitializeVaultProtoConfigParams,
 	// Accounts:
 	creator ag_solanago.PublicKey,
 	vaultProtoConfig ag_solanago.PublicKey,

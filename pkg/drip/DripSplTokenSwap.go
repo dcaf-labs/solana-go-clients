@@ -13,261 +13,247 @@ import (
 // DripSplTokenSwap is the `dripSplTokenSwap` instruction.
 type DripSplTokenSwap struct {
 
-	// [0] = [SIGNER] dripTriggerSource
+	// ····· common: [0] = [SIGNER] dripTriggerSource
 	//
-	// [1] = [WRITE] vault
+	// ············· [1] = [WRITE] vault
 	//
-	// [2] = [] vaultProtoConfig
+	// ············· [2] = [] vaultProtoConfig
 	//
-	// [3] = [] lastVaultPeriod
+	// ············· [3] = [] lastVaultPeriod
 	//
-	// [4] = [WRITE] currentVaultPeriod
+	// ············· [4] = [WRITE] currentVaultPeriod
 	//
-	// [5] = [WRITE] vaultTokenAAccount
+	// ············· [5] = [WRITE] vaultTokenAAccount
 	//
-	// [6] = [WRITE] vaultTokenBAccount
+	// ············· [6] = [WRITE] vaultTokenBAccount
 	//
-	// [7] = [WRITE] swapTokenAAccount
+	// ············· [7] = [WRITE] swapTokenAAccount
 	//
-	// [8] = [WRITE] swapTokenBAccount
+	// ············· [8] = [WRITE] swapTokenBAccount
 	//
-	// [9] = [WRITE] dripFeeTokenAAccount
+	// ············· [9] = [WRITE] dripFeeTokenAAccount
 	//
-	// [10] = [] tokenProgram
+	// ············· [10] = [] tokenProgram
 	//
-	// [11] = [] associatedTokenProgram
+	// [11] = [] swap
 	//
-	// [12] = [] systemProgram
+	// [12] = [WRITE] swapTokenMint
 	//
-	// [13] = [] rent
+	// [13] = [WRITE] swapFeeAccount
 	//
-	// [14] = [] swap
+	// [14] = [] swapAuthority
 	//
-	// [15] = [WRITE] swapTokenMint
-	//
-	// [16] = [WRITE] swapFeeAccount
-	//
-	// [17] = [] swapAuthority
-	//
-	// [18] = [] tokenSwapProgram
+	// [15] = [] tokenSwapProgram
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewDripSplTokenSwapInstructionBuilder creates a new `DripSplTokenSwap` instruction builder.
 func NewDripSplTokenSwapInstructionBuilder() *DripSplTokenSwap {
 	nd := &DripSplTokenSwap{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 19),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 16),
 	}
 	return nd
 }
 
+type DripSplTokenSwapCommonAccountsBuilder struct {
+	ag_solanago.AccountMetaSlice `bin:"-"`
+}
+
+func NewDripSplTokenSwapCommonAccountsBuilder() *DripSplTokenSwapCommonAccountsBuilder {
+	return &DripSplTokenSwapCommonAccountsBuilder{
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 11),
+	}
+}
+
+func (inst *DripSplTokenSwap) SetCommonAccountsFromBuilder(dripSplTokenSwapCommonAccountsBuilder *DripSplTokenSwapCommonAccountsBuilder) *DripSplTokenSwap {
+	inst.AccountMetaSlice[0] = dripSplTokenSwapCommonAccountsBuilder.GetDripTriggerSourceAccount()
+	inst.AccountMetaSlice[1] = dripSplTokenSwapCommonAccountsBuilder.GetVaultAccount()
+	inst.AccountMetaSlice[2] = dripSplTokenSwapCommonAccountsBuilder.GetVaultProtoConfigAccount()
+	inst.AccountMetaSlice[3] = dripSplTokenSwapCommonAccountsBuilder.GetLastVaultPeriodAccount()
+	inst.AccountMetaSlice[4] = dripSplTokenSwapCommonAccountsBuilder.GetCurrentVaultPeriodAccount()
+	inst.AccountMetaSlice[5] = dripSplTokenSwapCommonAccountsBuilder.GetVaultTokenAAccountAccount()
+	inst.AccountMetaSlice[6] = dripSplTokenSwapCommonAccountsBuilder.GetVaultTokenBAccountAccount()
+	inst.AccountMetaSlice[7] = dripSplTokenSwapCommonAccountsBuilder.GetSwapTokenAAccountAccount()
+	inst.AccountMetaSlice[8] = dripSplTokenSwapCommonAccountsBuilder.GetSwapTokenBAccountAccount()
+	inst.AccountMetaSlice[9] = dripSplTokenSwapCommonAccountsBuilder.GetDripFeeTokenAAccountAccount()
+	inst.AccountMetaSlice[10] = dripSplTokenSwapCommonAccountsBuilder.GetTokenProgramAccount()
+	return inst
+}
+
 // SetDripTriggerSourceAccount sets the "dripTriggerSource" account.
-func (inst *DripSplTokenSwap) SetDripTriggerSourceAccount(dripTriggerSource ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetDripTriggerSourceAccount(dripTriggerSource ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(dripTriggerSource).SIGNER()
 	return inst
 }
 
 // GetDripTriggerSourceAccount gets the "dripTriggerSource" account.
-func (inst *DripSplTokenSwap) GetDripTriggerSourceAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetDripTriggerSourceAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetVaultAccount sets the "vault" account.
-func (inst *DripSplTokenSwap) SetVaultAccount(vault ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetVaultAccount(vault ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault).WRITE()
 	return inst
 }
 
 // GetVaultAccount gets the "vault" account.
-func (inst *DripSplTokenSwap) GetVaultAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetVaultAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
-func (inst *DripSplTokenSwap) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
 	return inst
 }
 
 // GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
-func (inst *DripSplTokenSwap) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetLastVaultPeriodAccount sets the "lastVaultPeriod" account.
-func (inst *DripSplTokenSwap) SetLastVaultPeriodAccount(lastVaultPeriod ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetLastVaultPeriodAccount(lastVaultPeriod ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(lastVaultPeriod)
 	return inst
 }
 
 // GetLastVaultPeriodAccount gets the "lastVaultPeriod" account.
-func (inst *DripSplTokenSwap) GetLastVaultPeriodAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetLastVaultPeriodAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetCurrentVaultPeriodAccount sets the "currentVaultPeriod" account.
-func (inst *DripSplTokenSwap) SetCurrentVaultPeriodAccount(currentVaultPeriod ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetCurrentVaultPeriodAccount(currentVaultPeriod ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(currentVaultPeriod).WRITE()
 	return inst
 }
 
 // GetCurrentVaultPeriodAccount gets the "currentVaultPeriod" account.
-func (inst *DripSplTokenSwap) GetCurrentVaultPeriodAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetCurrentVaultPeriodAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetVaultTokenAAccountAccount sets the "vaultTokenAAccount" account.
-func (inst *DripSplTokenSwap) SetVaultTokenAAccountAccount(vaultTokenAAccount ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetVaultTokenAAccountAccount(vaultTokenAAccount ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(vaultTokenAAccount).WRITE()
 	return inst
 }
 
 // GetVaultTokenAAccountAccount gets the "vaultTokenAAccount" account.
-func (inst *DripSplTokenSwap) GetVaultTokenAAccountAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetVaultTokenAAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetVaultTokenBAccountAccount sets the "vaultTokenBAccount" account.
-func (inst *DripSplTokenSwap) SetVaultTokenBAccountAccount(vaultTokenBAccount ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetVaultTokenBAccountAccount(vaultTokenBAccount ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[6] = ag_solanago.Meta(vaultTokenBAccount).WRITE()
 	return inst
 }
 
 // GetVaultTokenBAccountAccount gets the "vaultTokenBAccount" account.
-func (inst *DripSplTokenSwap) GetVaultTokenBAccountAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetVaultTokenBAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetSwapTokenAAccountAccount sets the "swapTokenAAccount" account.
-func (inst *DripSplTokenSwap) SetSwapTokenAAccountAccount(swapTokenAAccount ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetSwapTokenAAccountAccount(swapTokenAAccount ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(swapTokenAAccount).WRITE()
 	return inst
 }
 
 // GetSwapTokenAAccountAccount gets the "swapTokenAAccount" account.
-func (inst *DripSplTokenSwap) GetSwapTokenAAccountAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetSwapTokenAAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetSwapTokenBAccountAccount sets the "swapTokenBAccount" account.
-func (inst *DripSplTokenSwap) SetSwapTokenBAccountAccount(swapTokenBAccount ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetSwapTokenBAccountAccount(swapTokenBAccount ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(swapTokenBAccount).WRITE()
 	return inst
 }
 
 // GetSwapTokenBAccountAccount gets the "swapTokenBAccount" account.
-func (inst *DripSplTokenSwap) GetSwapTokenBAccountAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetSwapTokenBAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
 // SetDripFeeTokenAAccountAccount sets the "dripFeeTokenAAccount" account.
-func (inst *DripSplTokenSwap) SetDripFeeTokenAAccountAccount(dripFeeTokenAAccount ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetDripFeeTokenAAccountAccount(dripFeeTokenAAccount ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[9] = ag_solanago.Meta(dripFeeTokenAAccount).WRITE()
 	return inst
 }
 
 // GetDripFeeTokenAAccountAccount gets the "dripFeeTokenAAccount" account.
-func (inst *DripSplTokenSwap) GetDripFeeTokenAAccountAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetDripFeeTokenAAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(9)
 }
 
 // SetTokenProgramAccount sets the "tokenProgram" account.
-func (inst *DripSplTokenSwap) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *DripSplTokenSwap {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *DripSplTokenSwapCommonAccountsBuilder {
 	inst.AccountMetaSlice[10] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "tokenProgram" account.
-func (inst *DripSplTokenSwap) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *DripSplTokenSwapCommonAccountsBuilder) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(10)
-}
-
-// SetAssociatedTokenProgramAccount sets the "associatedTokenProgram" account.
-func (inst *DripSplTokenSwap) SetAssociatedTokenProgramAccount(associatedTokenProgram ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[11] = ag_solanago.Meta(associatedTokenProgram)
-	return inst
-}
-
-// GetAssociatedTokenProgramAccount gets the "associatedTokenProgram" account.
-func (inst *DripSplTokenSwap) GetAssociatedTokenProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(11)
-}
-
-// SetSystemProgramAccount sets the "systemProgram" account.
-func (inst *DripSplTokenSwap) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[12] = ag_solanago.Meta(systemProgram)
-	return inst
-}
-
-// GetSystemProgramAccount gets the "systemProgram" account.
-func (inst *DripSplTokenSwap) GetSystemProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(12)
-}
-
-// SetRentAccount sets the "rent" account.
-func (inst *DripSplTokenSwap) SetRentAccount(rent ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[13] = ag_solanago.Meta(rent)
-	return inst
-}
-
-// GetRentAccount gets the "rent" account.
-func (inst *DripSplTokenSwap) GetRentAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(13)
 }
 
 // SetSwapAccount sets the "swap" account.
 func (inst *DripSplTokenSwap) SetSwapAccount(swap ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[14] = ag_solanago.Meta(swap)
+	inst.AccountMetaSlice[11] = ag_solanago.Meta(swap)
 	return inst
 }
 
 // GetSwapAccount gets the "swap" account.
 func (inst *DripSplTokenSwap) GetSwapAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(14)
+	return inst.AccountMetaSlice.Get(11)
 }
 
 // SetSwapTokenMintAccount sets the "swapTokenMint" account.
 func (inst *DripSplTokenSwap) SetSwapTokenMintAccount(swapTokenMint ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[15] = ag_solanago.Meta(swapTokenMint).WRITE()
+	inst.AccountMetaSlice[12] = ag_solanago.Meta(swapTokenMint).WRITE()
 	return inst
 }
 
 // GetSwapTokenMintAccount gets the "swapTokenMint" account.
 func (inst *DripSplTokenSwap) GetSwapTokenMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(15)
+	return inst.AccountMetaSlice.Get(12)
 }
 
 // SetSwapFeeAccountAccount sets the "swapFeeAccount" account.
 func (inst *DripSplTokenSwap) SetSwapFeeAccountAccount(swapFeeAccount ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[16] = ag_solanago.Meta(swapFeeAccount).WRITE()
+	inst.AccountMetaSlice[13] = ag_solanago.Meta(swapFeeAccount).WRITE()
 	return inst
 }
 
 // GetSwapFeeAccountAccount gets the "swapFeeAccount" account.
 func (inst *DripSplTokenSwap) GetSwapFeeAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(16)
+	return inst.AccountMetaSlice.Get(13)
 }
 
 // SetSwapAuthorityAccount sets the "swapAuthority" account.
 func (inst *DripSplTokenSwap) SetSwapAuthorityAccount(swapAuthority ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[17] = ag_solanago.Meta(swapAuthority)
+	inst.AccountMetaSlice[14] = ag_solanago.Meta(swapAuthority)
 	return inst
 }
 
 // GetSwapAuthorityAccount gets the "swapAuthority" account.
 func (inst *DripSplTokenSwap) GetSwapAuthorityAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(17)
+	return inst.AccountMetaSlice.Get(14)
 }
 
 // SetTokenSwapProgramAccount sets the "tokenSwapProgram" account.
 func (inst *DripSplTokenSwap) SetTokenSwapProgramAccount(tokenSwapProgram ag_solanago.PublicKey) *DripSplTokenSwap {
-	inst.AccountMetaSlice[18] = ag_solanago.Meta(tokenSwapProgram)
+	inst.AccountMetaSlice[15] = ag_solanago.Meta(tokenSwapProgram)
 	return inst
 }
 
 // GetTokenSwapProgramAccount gets the "tokenSwapProgram" account.
 func (inst *DripSplTokenSwap) GetTokenSwapProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(18)
+	return inst.AccountMetaSlice.Get(15)
 }
 
 func (inst DripSplTokenSwap) Build() *Instruction {
@@ -291,60 +277,51 @@ func (inst *DripSplTokenSwap) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
-			return errors.New("accounts.DripTriggerSource is not set")
+			return errors.New("accounts.CommonDripTriggerSource is not set")
 		}
 		if inst.AccountMetaSlice[1] == nil {
-			return errors.New("accounts.Vault is not set")
+			return errors.New("accounts.CommonVault is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
-			return errors.New("accounts.VaultProtoConfig is not set")
+			return errors.New("accounts.CommonVaultProtoConfig is not set")
 		}
 		if inst.AccountMetaSlice[3] == nil {
-			return errors.New("accounts.LastVaultPeriod is not set")
+			return errors.New("accounts.CommonLastVaultPeriod is not set")
 		}
 		if inst.AccountMetaSlice[4] == nil {
-			return errors.New("accounts.CurrentVaultPeriod is not set")
+			return errors.New("accounts.CommonCurrentVaultPeriod is not set")
 		}
 		if inst.AccountMetaSlice[5] == nil {
-			return errors.New("accounts.VaultTokenAAccount is not set")
+			return errors.New("accounts.CommonVaultTokenAAccount is not set")
 		}
 		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.VaultTokenBAccount is not set")
+			return errors.New("accounts.CommonVaultTokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[7] == nil {
-			return errors.New("accounts.SwapTokenAAccount is not set")
+			return errors.New("accounts.CommonSwapTokenAAccount is not set")
 		}
 		if inst.AccountMetaSlice[8] == nil {
-			return errors.New("accounts.SwapTokenBAccount is not set")
+			return errors.New("accounts.CommonSwapTokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[9] == nil {
-			return errors.New("accounts.DripFeeTokenAAccount is not set")
+			return errors.New("accounts.CommonDripFeeTokenAAccount is not set")
 		}
 		if inst.AccountMetaSlice[10] == nil {
-			return errors.New("accounts.TokenProgram is not set")
+			return errors.New("accounts.CommonTokenProgram is not set")
 		}
 		if inst.AccountMetaSlice[11] == nil {
-			return errors.New("accounts.AssociatedTokenProgram is not set")
-		}
-		if inst.AccountMetaSlice[12] == nil {
-			return errors.New("accounts.SystemProgram is not set")
-		}
-		if inst.AccountMetaSlice[13] == nil {
-			return errors.New("accounts.Rent is not set")
-		}
-		if inst.AccountMetaSlice[14] == nil {
 			return errors.New("accounts.Swap is not set")
 		}
-		if inst.AccountMetaSlice[15] == nil {
+		if inst.AccountMetaSlice[12] == nil {
 			return errors.New("accounts.SwapTokenMint is not set")
 		}
-		if inst.AccountMetaSlice[16] == nil {
+		if inst.AccountMetaSlice[13] == nil {
 			return errors.New("accounts.SwapFeeAccount is not set")
 		}
-		if inst.AccountMetaSlice[17] == nil {
+		if inst.AccountMetaSlice[14] == nil {
 			return errors.New("accounts.SwapAuthority is not set")
 		}
-		if inst.AccountMetaSlice[18] == nil {
+		if inst.AccountMetaSlice[15] == nil {
 			return errors.New("accounts.TokenSwapProgram is not set")
 		}
 	}
@@ -363,26 +340,23 @@ func (inst *DripSplTokenSwap) EncodeToTree(parent ag_treeout.Branches) {
 					instructionBranch.Child("Params[len=0]").ParentFunc(func(paramsBranch ag_treeout.Branches) {})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=19]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("     dripTriggerSource", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("                 vault", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("      vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("       lastVaultPeriod", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("    currentVaultPeriod", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("           vaultTokenA", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("           vaultTokenB", inst.AccountMetaSlice.Get(6)))
-						accountsBranch.Child(ag_format.Meta("            swapTokenA", inst.AccountMetaSlice.Get(7)))
-						accountsBranch.Child(ag_format.Meta("            swapTokenB", inst.AccountMetaSlice.Get(8)))
-						accountsBranch.Child(ag_format.Meta("         dripFeeTokenA", inst.AccountMetaSlice.Get(9)))
-						accountsBranch.Child(ag_format.Meta("          tokenProgram", inst.AccountMetaSlice.Get(10)))
-						accountsBranch.Child(ag_format.Meta("associatedTokenProgram", inst.AccountMetaSlice.Get(11)))
-						accountsBranch.Child(ag_format.Meta("         systemProgram", inst.AccountMetaSlice.Get(12)))
-						accountsBranch.Child(ag_format.Meta("                  rent", inst.AccountMetaSlice.Get(13)))
-						accountsBranch.Child(ag_format.Meta("                  swap", inst.AccountMetaSlice.Get(14)))
-						accountsBranch.Child(ag_format.Meta("         swapTokenMint", inst.AccountMetaSlice.Get(15)))
-						accountsBranch.Child(ag_format.Meta("               swapFee", inst.AccountMetaSlice.Get(16)))
-						accountsBranch.Child(ag_format.Meta("         swapAuthority", inst.AccountMetaSlice.Get(17)))
-						accountsBranch.Child(ag_format.Meta("      tokenSwapProgram", inst.AccountMetaSlice.Get(18)))
+					instructionBranch.Child("Accounts[len=16]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+						accountsBranch.Child(ag_format.Meta(" common/dripTriggerSource", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("             common/vault", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("  common/vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("   common/lastVaultPeriod", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta("common/currentVaultPeriod", inst.AccountMetaSlice.Get(4)))
+						accountsBranch.Child(ag_format.Meta("       common/vaultTokenA", inst.AccountMetaSlice.Get(5)))
+						accountsBranch.Child(ag_format.Meta("       common/vaultTokenB", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("        common/swapTokenA", inst.AccountMetaSlice.Get(7)))
+						accountsBranch.Child(ag_format.Meta("        common/swapTokenB", inst.AccountMetaSlice.Get(8)))
+						accountsBranch.Child(ag_format.Meta("     common/dripFeeTokenA", inst.AccountMetaSlice.Get(9)))
+						accountsBranch.Child(ag_format.Meta("      common/tokenProgram", inst.AccountMetaSlice.Get(10)))
+						accountsBranch.Child(ag_format.Meta("                     swap", inst.AccountMetaSlice.Get(11)))
+						accountsBranch.Child(ag_format.Meta("            swapTokenMint", inst.AccountMetaSlice.Get(12)))
+						accountsBranch.Child(ag_format.Meta("                  swapFee", inst.AccountMetaSlice.Get(13)))
+						accountsBranch.Child(ag_format.Meta("            swapAuthority", inst.AccountMetaSlice.Get(14)))
+						accountsBranch.Child(ag_format.Meta("         tokenSwapProgram", inst.AccountMetaSlice.Get(15)))
 					})
 				})
 		})
@@ -398,40 +372,37 @@ func (obj *DripSplTokenSwap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 // NewDripSplTokenSwapInstruction declares a new DripSplTokenSwap instruction with the provided parameters and accounts.
 func NewDripSplTokenSwapInstruction(
 	// Accounts:
-	dripTriggerSource ag_solanago.PublicKey,
-	vault ag_solanago.PublicKey,
-	vaultProtoConfig ag_solanago.PublicKey,
-	lastVaultPeriod ag_solanago.PublicKey,
-	currentVaultPeriod ag_solanago.PublicKey,
-	vaultTokenAAccount ag_solanago.PublicKey,
-	vaultTokenBAccount ag_solanago.PublicKey,
-	swapTokenAAccount ag_solanago.PublicKey,
-	swapTokenBAccount ag_solanago.PublicKey,
-	dripFeeTokenAAccount ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	associatedTokenProgram ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey,
-	rent ag_solanago.PublicKey,
+	commonDripTriggerSource ag_solanago.PublicKey,
+	commonVault ag_solanago.PublicKey,
+	commonVaultProtoConfig ag_solanago.PublicKey,
+	commonLastVaultPeriod ag_solanago.PublicKey,
+	commonCurrentVaultPeriod ag_solanago.PublicKey,
+	commonVaultTokenAAccount ag_solanago.PublicKey,
+	commonVaultTokenBAccount ag_solanago.PublicKey,
+	commonSwapTokenAAccount ag_solanago.PublicKey,
+	commonSwapTokenBAccount ag_solanago.PublicKey,
+	commonDripFeeTokenAAccount ag_solanago.PublicKey,
+	commonTokenProgram ag_solanago.PublicKey,
 	swap ag_solanago.PublicKey,
 	swapTokenMint ag_solanago.PublicKey,
 	swapFeeAccount ag_solanago.PublicKey,
 	swapAuthority ag_solanago.PublicKey,
 	tokenSwapProgram ag_solanago.PublicKey) *DripSplTokenSwap {
 	return NewDripSplTokenSwapInstructionBuilder().
-		SetDripTriggerSourceAccount(dripTriggerSource).
-		SetVaultAccount(vault).
-		SetVaultProtoConfigAccount(vaultProtoConfig).
-		SetLastVaultPeriodAccount(lastVaultPeriod).
-		SetCurrentVaultPeriodAccount(currentVaultPeriod).
-		SetVaultTokenAAccountAccount(vaultTokenAAccount).
-		SetVaultTokenBAccountAccount(vaultTokenBAccount).
-		SetSwapTokenAAccountAccount(swapTokenAAccount).
-		SetSwapTokenBAccountAccount(swapTokenBAccount).
-		SetDripFeeTokenAAccountAccount(dripFeeTokenAAccount).
-		SetTokenProgramAccount(tokenProgram).
-		SetAssociatedTokenProgramAccount(associatedTokenProgram).
-		SetSystemProgramAccount(systemProgram).
-		SetRentAccount(rent).
+		SetCommonAccountsFromBuilder(
+			NewDripSplTokenSwapCommonAccountsBuilder().
+				SetDripTriggerSourceAccount(commonDripTriggerSource).
+				SetVaultAccount(commonVault).
+				SetVaultProtoConfigAccount(commonVaultProtoConfig).
+				SetLastVaultPeriodAccount(commonLastVaultPeriod).
+				SetCurrentVaultPeriodAccount(commonCurrentVaultPeriod).
+				SetVaultTokenAAccountAccount(commonVaultTokenAAccount).
+				SetVaultTokenBAccountAccount(commonVaultTokenBAccount).
+				SetSwapTokenAAccountAccount(commonSwapTokenAAccount).
+				SetSwapTokenBAccountAccount(commonSwapTokenBAccount).
+				SetDripFeeTokenAAccountAccount(commonDripFeeTokenAAccount).
+				SetTokenProgramAccount(commonTokenProgram),
+		).
 		SetSwapAccount(swap).
 		SetSwapTokenMintAccount(swapTokenMint).
 		SetSwapFeeAccountAccount(swapFeeAccount).

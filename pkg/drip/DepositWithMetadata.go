@@ -14,31 +14,31 @@ import (
 type DepositWithMetadata struct {
 	Params *DepositParams
 
-	// [0] = [WRITE] vault
+	// ····· common: [0] = [WRITE, SIGNER] depositor
 	//
-	// [1] = [WRITE] vaultPeriodEnd
+	// ············· [1] = [WRITE] vault
 	//
-	// [2] = [WRITE] userPosition
+	// ············· [2] = [WRITE] vaultPeriodEnd
 	//
-	// [3] = [] tokenAMint
+	// ············· [3] = [WRITE] vaultTokenAAccount
 	//
-	// [4] = [WRITE, SIGNER] userPositionNftMint
+	// ············· [4] = [WRITE] userTokenAAccount
 	//
-	// [5] = [WRITE] vaultTokenAAccount
+	// ············· [5] = [WRITE] userPosition
 	//
-	// [6] = [WRITE] userTokenAAccount
+	// ············· [6] = [WRITE, SIGNER] userPositionNftMint
 	//
-	// [7] = [WRITE] userPositionNftAccount
+	// ············· [7] = [WRITE] userPositionNftAccount
 	//
-	// [8] = [WRITE, SIGNER] depositor
+	// ············· [8] = [] referrer
 	//
-	// [9] = [] tokenProgram
+	// ············· [9] = [] tokenProgram
 	//
-	// [10] = [] associatedTokenProgram
+	// ············· [10] = [] associatedTokenProgram
 	//
-	// [11] = [] rent
+	// ············· [11] = [] rent
 	//
-	// [12] = [] systemProgram
+	// ············· [12] = [] systemProgram
 	//
 	// [13] = [WRITE] positionMetadataAccount
 	//
@@ -60,146 +60,173 @@ func (inst *DepositWithMetadata) SetParams(params DepositParams) *DepositWithMet
 	return inst
 }
 
+type DepositWithMetadataCommonAccountsBuilder struct {
+	ag_solanago.AccountMetaSlice `bin:"-"`
+}
+
+func NewDepositWithMetadataCommonAccountsBuilder() *DepositWithMetadataCommonAccountsBuilder {
+	return &DepositWithMetadataCommonAccountsBuilder{
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 13),
+	}
+}
+
+func (inst *DepositWithMetadata) SetCommonAccountsFromBuilder(depositWithMetadataCommonAccountsBuilder *DepositWithMetadataCommonAccountsBuilder) *DepositWithMetadata {
+	inst.AccountMetaSlice[0] = depositWithMetadataCommonAccountsBuilder.GetDepositorAccount()
+	inst.AccountMetaSlice[1] = depositWithMetadataCommonAccountsBuilder.GetVaultAccount()
+	inst.AccountMetaSlice[2] = depositWithMetadataCommonAccountsBuilder.GetVaultPeriodEndAccount()
+	inst.AccountMetaSlice[3] = depositWithMetadataCommonAccountsBuilder.GetVaultTokenAAccountAccount()
+	inst.AccountMetaSlice[4] = depositWithMetadataCommonAccountsBuilder.GetUserTokenAAccountAccount()
+	inst.AccountMetaSlice[5] = depositWithMetadataCommonAccountsBuilder.GetUserPositionAccount()
+	inst.AccountMetaSlice[6] = depositWithMetadataCommonAccountsBuilder.GetUserPositionNftMintAccount()
+	inst.AccountMetaSlice[7] = depositWithMetadataCommonAccountsBuilder.GetUserPositionNftAccountAccount()
+	inst.AccountMetaSlice[8] = depositWithMetadataCommonAccountsBuilder.GetReferrerAccount()
+	inst.AccountMetaSlice[9] = depositWithMetadataCommonAccountsBuilder.GetTokenProgramAccount()
+	inst.AccountMetaSlice[10] = depositWithMetadataCommonAccountsBuilder.GetAssociatedTokenProgramAccount()
+	inst.AccountMetaSlice[11] = depositWithMetadataCommonAccountsBuilder.GetRentAccount()
+	inst.AccountMetaSlice[12] = depositWithMetadataCommonAccountsBuilder.GetSystemProgramAccount()
+	return inst
+}
+
+// SetDepositorAccount sets the "depositor" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetDepositorAccount(depositor ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(depositor).WRITE().SIGNER()
+	return inst
+}
+
+// GetDepositorAccount gets the "depositor" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetDepositorAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(0)
+}
+
 // SetVaultAccount sets the "vault" account.
-func (inst *DepositWithMetadata) SetVaultAccount(vault ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[0] = ag_solanago.Meta(vault).WRITE()
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetVaultAccount(vault ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault).WRITE()
 	return inst
 }
 
 // GetVaultAccount gets the "vault" account.
-func (inst *DepositWithMetadata) GetVaultAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(0)
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetVaultAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetVaultPeriodEndAccount sets the "vaultPeriodEnd" account.
-func (inst *DepositWithMetadata) SetVaultPeriodEndAccount(vaultPeriodEnd ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[1] = ag_solanago.Meta(vaultPeriodEnd).WRITE()
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetVaultPeriodEndAccount(vaultPeriodEnd ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultPeriodEnd).WRITE()
 	return inst
 }
 
 // GetVaultPeriodEndAccount gets the "vaultPeriodEnd" account.
-func (inst *DepositWithMetadata) GetVaultPeriodEndAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(1)
-}
-
-// SetUserPositionAccount sets the "userPosition" account.
-func (inst *DepositWithMetadata) SetUserPositionAccount(userPosition ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[2] = ag_solanago.Meta(userPosition).WRITE()
-	return inst
-}
-
-// GetUserPositionAccount gets the "userPosition" account.
-func (inst *DepositWithMetadata) GetUserPositionAccount() *ag_solanago.AccountMeta {
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetVaultPeriodEndAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
-// SetTokenAMintAccount sets the "tokenAMint" account.
-func (inst *DepositWithMetadata) SetTokenAMintAccount(tokenAMint ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[3] = ag_solanago.Meta(tokenAMint)
-	return inst
-}
-
-// GetTokenAMintAccount gets the "tokenAMint" account.
-func (inst *DepositWithMetadata) GetTokenAMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(3)
-}
-
-// SetUserPositionNftMintAccount sets the "userPositionNftMint" account.
-func (inst *DepositWithMetadata) SetUserPositionNftMintAccount(userPositionNftMint ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[4] = ag_solanago.Meta(userPositionNftMint).WRITE().SIGNER()
-	return inst
-}
-
-// GetUserPositionNftMintAccount gets the "userPositionNftMint" account.
-func (inst *DepositWithMetadata) GetUserPositionNftMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(4)
-}
-
 // SetVaultTokenAAccountAccount sets the "vaultTokenAAccount" account.
-func (inst *DepositWithMetadata) SetVaultTokenAAccountAccount(vaultTokenAAccount ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[5] = ag_solanago.Meta(vaultTokenAAccount).WRITE()
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetVaultTokenAAccountAccount(vaultTokenAAccount ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[3] = ag_solanago.Meta(vaultTokenAAccount).WRITE()
 	return inst
 }
 
 // GetVaultTokenAAccountAccount gets the "vaultTokenAAccount" account.
-func (inst *DepositWithMetadata) GetVaultTokenAAccountAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(5)
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetVaultTokenAAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetUserTokenAAccountAccount sets the "userTokenAAccount" account.
-func (inst *DepositWithMetadata) SetUserTokenAAccountAccount(userTokenAAccount ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(userTokenAAccount).WRITE()
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetUserTokenAAccountAccount(userTokenAAccount ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[4] = ag_solanago.Meta(userTokenAAccount).WRITE()
 	return inst
 }
 
 // GetUserTokenAAccountAccount gets the "userTokenAAccount" account.
-func (inst *DepositWithMetadata) GetUserTokenAAccountAccount() *ag_solanago.AccountMeta {
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetUserTokenAAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(4)
+}
+
+// SetUserPositionAccount sets the "userPosition" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetUserPositionAccount(userPosition ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[5] = ag_solanago.Meta(userPosition).WRITE()
+	return inst
+}
+
+// GetUserPositionAccount gets the "userPosition" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetUserPositionAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(5)
+}
+
+// SetUserPositionNftMintAccount sets the "userPositionNftMint" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetUserPositionNftMintAccount(userPositionNftMint ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[6] = ag_solanago.Meta(userPositionNftMint).WRITE().SIGNER()
+	return inst
+}
+
+// GetUserPositionNftMintAccount gets the "userPositionNftMint" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetUserPositionNftMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetUserPositionNftAccountAccount sets the "userPositionNftAccount" account.
-func (inst *DepositWithMetadata) SetUserPositionNftAccountAccount(userPositionNftAccount ag_solanago.PublicKey) *DepositWithMetadata {
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetUserPositionNftAccountAccount(userPositionNftAccount ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(userPositionNftAccount).WRITE()
 	return inst
 }
 
 // GetUserPositionNftAccountAccount gets the "userPositionNftAccount" account.
-func (inst *DepositWithMetadata) GetUserPositionNftAccountAccount() *ag_solanago.AccountMeta {
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetUserPositionNftAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
-// SetDepositorAccount sets the "depositor" account.
-func (inst *DepositWithMetadata) SetDepositorAccount(depositor ag_solanago.PublicKey) *DepositWithMetadata {
-	inst.AccountMetaSlice[8] = ag_solanago.Meta(depositor).WRITE().SIGNER()
+// SetReferrerAccount sets the "referrer" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetReferrerAccount(referrer ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
+	inst.AccountMetaSlice[8] = ag_solanago.Meta(referrer)
 	return inst
 }
 
-// GetDepositorAccount gets the "depositor" account.
-func (inst *DepositWithMetadata) GetDepositorAccount() *ag_solanago.AccountMeta {
+// GetReferrerAccount gets the "referrer" account.
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetReferrerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
 // SetTokenProgramAccount sets the "tokenProgram" account.
-func (inst *DepositWithMetadata) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *DepositWithMetadata {
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
 	inst.AccountMetaSlice[9] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "tokenProgram" account.
-func (inst *DepositWithMetadata) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(9)
 }
 
 // SetAssociatedTokenProgramAccount sets the "associatedTokenProgram" account.
-func (inst *DepositWithMetadata) SetAssociatedTokenProgramAccount(associatedTokenProgram ag_solanago.PublicKey) *DepositWithMetadata {
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetAssociatedTokenProgramAccount(associatedTokenProgram ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
 	inst.AccountMetaSlice[10] = ag_solanago.Meta(associatedTokenProgram)
 	return inst
 }
 
 // GetAssociatedTokenProgramAccount gets the "associatedTokenProgram" account.
-func (inst *DepositWithMetadata) GetAssociatedTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetAssociatedTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(10)
 }
 
 // SetRentAccount sets the "rent" account.
-func (inst *DepositWithMetadata) SetRentAccount(rent ag_solanago.PublicKey) *DepositWithMetadata {
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetRentAccount(rent ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
 	inst.AccountMetaSlice[11] = ag_solanago.Meta(rent)
 	return inst
 }
 
 // GetRentAccount gets the "rent" account.
-func (inst *DepositWithMetadata) GetRentAccount() *ag_solanago.AccountMeta {
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetRentAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(11)
 }
 
 // SetSystemProgramAccount sets the "systemProgram" account.
-func (inst *DepositWithMetadata) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *DepositWithMetadata {
+func (inst *DepositWithMetadataCommonAccountsBuilder) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *DepositWithMetadataCommonAccountsBuilder {
 	inst.AccountMetaSlice[12] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "systemProgram" account.
-func (inst *DepositWithMetadata) GetSystemProgramAccount() *ag_solanago.AccountMeta {
+func (inst *DepositWithMetadataCommonAccountsBuilder) GetSystemProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(12)
 }
 
@@ -253,43 +280,43 @@ func (inst *DepositWithMetadata) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
-			return errors.New("accounts.Vault is not set")
+			return errors.New("accounts.CommonDepositor is not set")
 		}
 		if inst.AccountMetaSlice[1] == nil {
-			return errors.New("accounts.VaultPeriodEnd is not set")
+			return errors.New("accounts.CommonVault is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
-			return errors.New("accounts.UserPosition is not set")
+			return errors.New("accounts.CommonVaultPeriodEnd is not set")
 		}
 		if inst.AccountMetaSlice[3] == nil {
-			return errors.New("accounts.TokenAMint is not set")
+			return errors.New("accounts.CommonVaultTokenAAccount is not set")
 		}
 		if inst.AccountMetaSlice[4] == nil {
-			return errors.New("accounts.UserPositionNftMint is not set")
+			return errors.New("accounts.CommonUserTokenAAccount is not set")
 		}
 		if inst.AccountMetaSlice[5] == nil {
-			return errors.New("accounts.VaultTokenAAccount is not set")
+			return errors.New("accounts.CommonUserPosition is not set")
 		}
 		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.UserTokenAAccount is not set")
+			return errors.New("accounts.CommonUserPositionNftMint is not set")
 		}
 		if inst.AccountMetaSlice[7] == nil {
-			return errors.New("accounts.UserPositionNftAccount is not set")
+			return errors.New("accounts.CommonUserPositionNftAccount is not set")
 		}
 		if inst.AccountMetaSlice[8] == nil {
-			return errors.New("accounts.Depositor is not set")
+			return errors.New("accounts.CommonReferrer is not set")
 		}
 		if inst.AccountMetaSlice[9] == nil {
-			return errors.New("accounts.TokenProgram is not set")
+			return errors.New("accounts.CommonTokenProgram is not set")
 		}
 		if inst.AccountMetaSlice[10] == nil {
-			return errors.New("accounts.AssociatedTokenProgram is not set")
+			return errors.New("accounts.CommonAssociatedTokenProgram is not set")
 		}
 		if inst.AccountMetaSlice[11] == nil {
-			return errors.New("accounts.Rent is not set")
+			return errors.New("accounts.CommonRent is not set")
 		}
 		if inst.AccountMetaSlice[12] == nil {
-			return errors.New("accounts.SystemProgram is not set")
+			return errors.New("accounts.CommonSystemProgram is not set")
 		}
 		if inst.AccountMetaSlice[13] == nil {
 			return errors.New("accounts.PositionMetadataAccount is not set")
@@ -316,21 +343,21 @@ func (inst *DepositWithMetadata) EncodeToTree(parent ag_treeout.Branches) {
 
 					// Accounts of the instruction:
 					instructionBranch.Child("Accounts[len=15]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("                 vault", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("        vaultPeriodEnd", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("          userPosition", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("            tokenAMint", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("   userPositionNftMint", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("           vaultTokenA", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("            userTokenA", inst.AccountMetaSlice.Get(6)))
-						accountsBranch.Child(ag_format.Meta("       userPositionNft", inst.AccountMetaSlice.Get(7)))
-						accountsBranch.Child(ag_format.Meta("             depositor", inst.AccountMetaSlice.Get(8)))
-						accountsBranch.Child(ag_format.Meta("          tokenProgram", inst.AccountMetaSlice.Get(9)))
-						accountsBranch.Child(ag_format.Meta("associatedTokenProgram", inst.AccountMetaSlice.Get(10)))
-						accountsBranch.Child(ag_format.Meta("                  rent", inst.AccountMetaSlice.Get(11)))
-						accountsBranch.Child(ag_format.Meta("         systemProgram", inst.AccountMetaSlice.Get(12)))
-						accountsBranch.Child(ag_format.Meta("      positionMetadata", inst.AccountMetaSlice.Get(13)))
-						accountsBranch.Child(ag_format.Meta("       metadataProgram", inst.AccountMetaSlice.Get(14)))
+						accountsBranch.Child(ag_format.Meta("             common/depositor", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("                 common/vault", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("        common/vaultPeriodEnd", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("           common/vaultTokenA", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta("            common/userTokenA", inst.AccountMetaSlice.Get(4)))
+						accountsBranch.Child(ag_format.Meta("          common/userPosition", inst.AccountMetaSlice.Get(5)))
+						accountsBranch.Child(ag_format.Meta("   common/userPositionNftMint", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("       common/userPositionNft", inst.AccountMetaSlice.Get(7)))
+						accountsBranch.Child(ag_format.Meta("              common/referrer", inst.AccountMetaSlice.Get(8)))
+						accountsBranch.Child(ag_format.Meta("          common/tokenProgram", inst.AccountMetaSlice.Get(9)))
+						accountsBranch.Child(ag_format.Meta("common/associatedTokenProgram", inst.AccountMetaSlice.Get(10)))
+						accountsBranch.Child(ag_format.Meta("                  common/rent", inst.AccountMetaSlice.Get(11)))
+						accountsBranch.Child(ag_format.Meta("         common/systemProgram", inst.AccountMetaSlice.Get(12)))
+						accountsBranch.Child(ag_format.Meta("             positionMetadata", inst.AccountMetaSlice.Get(13)))
+						accountsBranch.Child(ag_format.Meta("              metadataProgram", inst.AccountMetaSlice.Get(14)))
 					})
 				})
 		})
@@ -358,36 +385,39 @@ func NewDepositWithMetadataInstruction(
 	// Parameters:
 	params DepositParams,
 	// Accounts:
-	vault ag_solanago.PublicKey,
-	vaultPeriodEnd ag_solanago.PublicKey,
-	userPosition ag_solanago.PublicKey,
-	tokenAMint ag_solanago.PublicKey,
-	userPositionNftMint ag_solanago.PublicKey,
-	vaultTokenAAccount ag_solanago.PublicKey,
-	userTokenAAccount ag_solanago.PublicKey,
-	userPositionNftAccount ag_solanago.PublicKey,
-	depositor ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	associatedTokenProgram ag_solanago.PublicKey,
-	rent ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey,
+	commonDepositor ag_solanago.PublicKey,
+	commonVault ag_solanago.PublicKey,
+	commonVaultPeriodEnd ag_solanago.PublicKey,
+	commonVaultTokenAAccount ag_solanago.PublicKey,
+	commonUserTokenAAccount ag_solanago.PublicKey,
+	commonUserPosition ag_solanago.PublicKey,
+	commonUserPositionNftMint ag_solanago.PublicKey,
+	commonUserPositionNftAccount ag_solanago.PublicKey,
+	commonReferrer ag_solanago.PublicKey,
+	commonTokenProgram ag_solanago.PublicKey,
+	commonAssociatedTokenProgram ag_solanago.PublicKey,
+	commonRent ag_solanago.PublicKey,
+	commonSystemProgram ag_solanago.PublicKey,
 	positionMetadataAccount ag_solanago.PublicKey,
 	metadataProgram ag_solanago.PublicKey) *DepositWithMetadata {
 	return NewDepositWithMetadataInstructionBuilder().
 		SetParams(params).
-		SetVaultAccount(vault).
-		SetVaultPeriodEndAccount(vaultPeriodEnd).
-		SetUserPositionAccount(userPosition).
-		SetTokenAMintAccount(tokenAMint).
-		SetUserPositionNftMintAccount(userPositionNftMint).
-		SetVaultTokenAAccountAccount(vaultTokenAAccount).
-		SetUserTokenAAccountAccount(userTokenAAccount).
-		SetUserPositionNftAccountAccount(userPositionNftAccount).
-		SetDepositorAccount(depositor).
-		SetTokenProgramAccount(tokenProgram).
-		SetAssociatedTokenProgramAccount(associatedTokenProgram).
-		SetRentAccount(rent).
-		SetSystemProgramAccount(systemProgram).
+		SetCommonAccountsFromBuilder(
+			NewDepositWithMetadataCommonAccountsBuilder().
+				SetDepositorAccount(commonDepositor).
+				SetVaultAccount(commonVault).
+				SetVaultPeriodEndAccount(commonVaultPeriodEnd).
+				SetVaultTokenAAccountAccount(commonVaultTokenAAccount).
+				SetUserTokenAAccountAccount(commonUserTokenAAccount).
+				SetUserPositionAccount(commonUserPosition).
+				SetUserPositionNftMintAccount(commonUserPositionNftMint).
+				SetUserPositionNftAccountAccount(commonUserPositionNftAccount).
+				SetReferrerAccount(commonReferrer).
+				SetTokenProgramAccount(commonTokenProgram).
+				SetAssociatedTokenProgramAccount(commonAssociatedTokenProgram).
+				SetRentAccount(commonRent).
+				SetSystemProgramAccount(commonSystemProgram),
+		).
 		SetPositionMetadataAccountAccount(positionMetadataAccount).
 		SetMetadataProgramAccount(metadataProgram)
 }

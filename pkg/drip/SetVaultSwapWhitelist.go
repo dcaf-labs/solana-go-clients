@@ -10,8 +10,8 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-// UpdateVaultWhitelistedSwaps is the `updateVaultWhitelistedSwaps` instruction.
-type UpdateVaultWhitelistedSwaps struct {
+// SetVaultSwapWhitelist is the `setVaultSwapWhitelist` instruction.
+type SetVaultSwapWhitelist struct {
 	Params *UpdateVaultWhitelistedSwapsParams
 
 	// [0] = [WRITE, SIGNER] admin
@@ -19,87 +19,74 @@ type UpdateVaultWhitelistedSwaps struct {
 	// [1] = [WRITE] vault
 	//
 	// [2] = [] vaultProtoConfig
-	//
-	// [3] = [] systemProgram
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewUpdateVaultWhitelistedSwapsInstructionBuilder creates a new `UpdateVaultWhitelistedSwaps` instruction builder.
-func NewUpdateVaultWhitelistedSwapsInstructionBuilder() *UpdateVaultWhitelistedSwaps {
-	nd := &UpdateVaultWhitelistedSwaps{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 4),
+// NewSetVaultSwapWhitelistInstructionBuilder creates a new `SetVaultSwapWhitelist` instruction builder.
+func NewSetVaultSwapWhitelistInstructionBuilder() *SetVaultSwapWhitelist {
+	nd := &SetVaultSwapWhitelist{
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 3),
 	}
 	return nd
 }
 
 // SetParams sets the "params" parameter.
-func (inst *UpdateVaultWhitelistedSwaps) SetParams(params UpdateVaultWhitelistedSwapsParams) *UpdateVaultWhitelistedSwaps {
+func (inst *SetVaultSwapWhitelist) SetParams(params UpdateVaultWhitelistedSwapsParams) *SetVaultSwapWhitelist {
 	inst.Params = &params
 	return inst
 }
 
 // SetAdminAccount sets the "admin" account.
-func (inst *UpdateVaultWhitelistedSwaps) SetAdminAccount(admin ag_solanago.PublicKey) *UpdateVaultWhitelistedSwaps {
+func (inst *SetVaultSwapWhitelist) SetAdminAccount(admin ag_solanago.PublicKey) *SetVaultSwapWhitelist {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(admin).WRITE().SIGNER()
 	return inst
 }
 
 // GetAdminAccount gets the "admin" account.
-func (inst *UpdateVaultWhitelistedSwaps) GetAdminAccount() *ag_solanago.AccountMeta {
+func (inst *SetVaultSwapWhitelist) GetAdminAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetVaultAccount sets the "vault" account.
-func (inst *UpdateVaultWhitelistedSwaps) SetVaultAccount(vault ag_solanago.PublicKey) *UpdateVaultWhitelistedSwaps {
+func (inst *SetVaultSwapWhitelist) SetVaultAccount(vault ag_solanago.PublicKey) *SetVaultSwapWhitelist {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault).WRITE()
 	return inst
 }
 
 // GetVaultAccount gets the "vault" account.
-func (inst *UpdateVaultWhitelistedSwaps) GetVaultAccount() *ag_solanago.AccountMeta {
+func (inst *SetVaultSwapWhitelist) GetVaultAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
-func (inst *UpdateVaultWhitelistedSwaps) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *UpdateVaultWhitelistedSwaps {
+func (inst *SetVaultSwapWhitelist) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *SetVaultSwapWhitelist {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
 	return inst
 }
 
 // GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
-func (inst *UpdateVaultWhitelistedSwaps) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
+func (inst *SetVaultSwapWhitelist) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
-// SetSystemProgramAccount sets the "systemProgram" account.
-func (inst *UpdateVaultWhitelistedSwaps) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *UpdateVaultWhitelistedSwaps {
-	inst.AccountMetaSlice[3] = ag_solanago.Meta(systemProgram)
-	return inst
-}
-
-// GetSystemProgramAccount gets the "systemProgram" account.
-func (inst *UpdateVaultWhitelistedSwaps) GetSystemProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(3)
-}
-
-func (inst UpdateVaultWhitelistedSwaps) Build() *Instruction {
+func (inst SetVaultSwapWhitelist) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_UpdateVaultWhitelistedSwaps,
+		TypeID: Instruction_SetVaultSwapWhitelist,
 	}}
 }
 
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst UpdateVaultWhitelistedSwaps) ValidateAndBuild() (*Instruction, error) {
+func (inst SetVaultSwapWhitelist) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *UpdateVaultWhitelistedSwaps) Validate() error {
+func (inst *SetVaultSwapWhitelist) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.Params == nil {
@@ -118,18 +105,15 @@ func (inst *UpdateVaultWhitelistedSwaps) Validate() error {
 		if inst.AccountMetaSlice[2] == nil {
 			return errors.New("accounts.VaultProtoConfig is not set")
 		}
-		if inst.AccountMetaSlice[3] == nil {
-			return errors.New("accounts.SystemProgram is not set")
-		}
 	}
 	return nil
 }
 
-func (inst *UpdateVaultWhitelistedSwaps) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *SetVaultSwapWhitelist) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
-			programBranch.Child(ag_format.Instruction("UpdateVaultWhitelistedSwaps")).
+			programBranch.Child(ag_format.Instruction("SetVaultSwapWhitelist")).
 				//
 				ParentFunc(func(instructionBranch ag_treeout.Branches) {
 
@@ -139,17 +123,16 @@ func (inst *UpdateVaultWhitelistedSwaps) EncodeToTree(parent ag_treeout.Branches
 					})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=4]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+					instructionBranch.Child("Accounts[len=3]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
 						accountsBranch.Child(ag_format.Meta("           admin", inst.AccountMetaSlice.Get(0)))
 						accountsBranch.Child(ag_format.Meta("           vault", inst.AccountMetaSlice.Get(1)))
 						accountsBranch.Child(ag_format.Meta("vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("   systemProgram", inst.AccountMetaSlice.Get(3)))
 					})
 				})
 		})
 }
 
-func (obj UpdateVaultWhitelistedSwaps) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SetVaultSwapWhitelist) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `Params` param:
 	err = encoder.Encode(obj.Params)
 	if err != nil {
@@ -157,7 +140,7 @@ func (obj UpdateVaultWhitelistedSwaps) MarshalWithEncoder(encoder *ag_binary.Enc
 	}
 	return nil
 }
-func (obj *UpdateVaultWhitelistedSwaps) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SetVaultSwapWhitelist) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `Params`:
 	err = decoder.Decode(&obj.Params)
 	if err != nil {
@@ -166,19 +149,17 @@ func (obj *UpdateVaultWhitelistedSwaps) UnmarshalWithDecoder(decoder *ag_binary.
 	return nil
 }
 
-// NewUpdateVaultWhitelistedSwapsInstruction declares a new UpdateVaultWhitelistedSwaps instruction with the provided parameters and accounts.
-func NewUpdateVaultWhitelistedSwapsInstruction(
+// NewSetVaultSwapWhitelistInstruction declares a new SetVaultSwapWhitelist instruction with the provided parameters and accounts.
+func NewSetVaultSwapWhitelistInstruction(
 	// Parameters:
 	params UpdateVaultWhitelistedSwapsParams,
 	// Accounts:
 	admin ag_solanago.PublicKey,
 	vault ag_solanago.PublicKey,
-	vaultProtoConfig ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey) *UpdateVaultWhitelistedSwaps {
-	return NewUpdateVaultWhitelistedSwapsInstructionBuilder().
+	vaultProtoConfig ag_solanago.PublicKey) *SetVaultSwapWhitelist {
+	return NewSetVaultSwapWhitelistInstructionBuilder().
 		SetParams(params).
 		SetAdminAccount(admin).
 		SetVaultAccount(vault).
-		SetVaultProtoConfigAccount(vaultProtoConfig).
-		SetSystemProgramAccount(systemProgram)
+		SetVaultProtoConfigAccount(vaultProtoConfig)
 }

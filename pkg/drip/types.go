@@ -7,83 +7,6 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-type InitializeVaultPeriodParams struct {
-	PeriodId uint64
-}
-
-func (obj InitializeVaultPeriodParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `PeriodId` param:
-	err = encoder.Encode(obj.PeriodId)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *InitializeVaultPeriodParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `PeriodId`:
-	err = decoder.Decode(&obj.PeriodId)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type InitVaultProtoConfigParams struct {
-	Granularity             uint64
-	TokenADripTriggerSpread uint16
-	TokenBWithdrawalSpread  uint16
-	Admin                   ag_solanago.PublicKey
-}
-
-func (obj InitVaultProtoConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `Granularity` param:
-	err = encoder.Encode(obj.Granularity)
-	if err != nil {
-		return err
-	}
-	// Serialize `TokenADripTriggerSpread` param:
-	err = encoder.Encode(obj.TokenADripTriggerSpread)
-	if err != nil {
-		return err
-	}
-	// Serialize `TokenBWithdrawalSpread` param:
-	err = encoder.Encode(obj.TokenBWithdrawalSpread)
-	if err != nil {
-		return err
-	}
-	// Serialize `Admin` param:
-	err = encoder.Encode(obj.Admin)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *InitVaultProtoConfigParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `Granularity`:
-	err = decoder.Decode(&obj.Granularity)
-	if err != nil {
-		return err
-	}
-	// Deserialize `TokenADripTriggerSpread`:
-	err = decoder.Decode(&obj.TokenADripTriggerSpread)
-	if err != nil {
-		return err
-	}
-	// Deserialize `TokenBWithdrawalSpread`:
-	err = decoder.Decode(&obj.TokenBWithdrawalSpread)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Admin`:
-	err = decoder.Decode(&obj.Admin)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 type InitializeVaultParams struct {
 	MaxSlippageBps   uint16
 	WhitelistedSwaps []ag_solanago.PublicKey
@@ -166,6 +89,94 @@ func (obj *DepositParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 	}
 	// Deserialize `NumberOfSwaps`:
 	err = decoder.Decode(&obj.NumberOfSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type InitializeVaultProtoConfigParams struct {
+	Granularity             uint64
+	TokenADripTriggerSpread uint16
+	TokenBWithdrawalSpread  uint16
+	TokenBReferralSpread    uint16
+	Admin                   ag_solanago.PublicKey
+}
+
+func (obj InitializeVaultProtoConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Granularity` param:
+	err = encoder.Encode(obj.Granularity)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenADripTriggerSpread` param:
+	err = encoder.Encode(obj.TokenADripTriggerSpread)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenBWithdrawalSpread` param:
+	err = encoder.Encode(obj.TokenBWithdrawalSpread)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenBReferralSpread` param:
+	err = encoder.Encode(obj.TokenBReferralSpread)
+	if err != nil {
+		return err
+	}
+	// Serialize `Admin` param:
+	err = encoder.Encode(obj.Admin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *InitializeVaultProtoConfigParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Granularity`:
+	err = decoder.Decode(&obj.Granularity)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenADripTriggerSpread`:
+	err = decoder.Decode(&obj.TokenADripTriggerSpread)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenBWithdrawalSpread`:
+	err = decoder.Decode(&obj.TokenBWithdrawalSpread)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenBReferralSpread`:
+	err = decoder.Decode(&obj.TokenBReferralSpread)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Admin`:
+	err = decoder.Decode(&obj.Admin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type InitializeVaultPeriodParams struct {
+	PeriodId uint64
+}
+
+func (obj InitializeVaultPeriodParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `PeriodId` param:
+	err = encoder.Encode(obj.PeriodId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *InitializeVaultPeriodParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `PeriodId`:
+	err = decoder.Decode(&obj.PeriodId)
 	if err != nil {
 		return err
 	}

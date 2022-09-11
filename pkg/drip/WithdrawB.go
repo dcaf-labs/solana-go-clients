@@ -13,29 +13,29 @@ import (
 // WithdrawB is the `withdrawB` instruction.
 type WithdrawB struct {
 
-	// [0] = [SIGNER] withdrawer
+	// ····· common: [0] = [SIGNER] withdrawer
 	//
-	// [1] = [] vault
+	// ············· [1] = [WRITE] vault
 	//
-	// [2] = [] vaultProtoConfig
+	// ············· [2] = [] vaultProtoConfig
 	//
-	// [3] = [] vaultPeriodI
+	// ············· [3] = [] vaultPeriodI
 	//
-	// [4] = [] vaultPeriodJ
+	// ············· [4] = [] vaultPeriodJ
 	//
-	// [5] = [WRITE] userPosition
+	// ············· [5] = [WRITE] userPosition
 	//
-	// [6] = [] userPositionNftAccount
+	// ············· [6] = [WRITE] userPositionNftAccount
 	//
-	// [7] = [WRITE] vaultTokenBAccount
+	// ············· [7] = [WRITE] vaultTokenBAccount
 	//
-	// [8] = [WRITE] vaultTreasuryTokenBAccount
+	// ············· [8] = [WRITE] vaultTreasuryTokenBAccount
 	//
-	// [9] = [WRITE] userTokenBAccount
+	// ············· [9] = [WRITE] userTokenBAccount
 	//
-	// [10] = [] tokenProgram
+	// ············· [10] = [WRITE] referrer
 	//
-	// [11] = [] associatedTokenProgram
+	// ············· [11] = [] tokenProgram
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
@@ -47,135 +47,161 @@ func NewWithdrawBInstructionBuilder() *WithdrawB {
 	return nd
 }
 
+type WithdrawBCommonAccountsBuilder struct {
+	ag_solanago.AccountMetaSlice `bin:"-"`
+}
+
+func NewWithdrawBCommonAccountsBuilder() *WithdrawBCommonAccountsBuilder {
+	return &WithdrawBCommonAccountsBuilder{
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 12),
+	}
+}
+
+func (inst *WithdrawB) SetCommonAccountsFromBuilder(withdrawBCommonAccountsBuilder *WithdrawBCommonAccountsBuilder) *WithdrawB {
+	inst.AccountMetaSlice[0] = withdrawBCommonAccountsBuilder.GetWithdrawerAccount()
+	inst.AccountMetaSlice[1] = withdrawBCommonAccountsBuilder.GetVaultAccount()
+	inst.AccountMetaSlice[2] = withdrawBCommonAccountsBuilder.GetVaultProtoConfigAccount()
+	inst.AccountMetaSlice[3] = withdrawBCommonAccountsBuilder.GetVaultPeriodIAccount()
+	inst.AccountMetaSlice[4] = withdrawBCommonAccountsBuilder.GetVaultPeriodJAccount()
+	inst.AccountMetaSlice[5] = withdrawBCommonAccountsBuilder.GetUserPositionAccount()
+	inst.AccountMetaSlice[6] = withdrawBCommonAccountsBuilder.GetUserPositionNftAccountAccount()
+	inst.AccountMetaSlice[7] = withdrawBCommonAccountsBuilder.GetVaultTokenBAccountAccount()
+	inst.AccountMetaSlice[8] = withdrawBCommonAccountsBuilder.GetVaultTreasuryTokenBAccountAccount()
+	inst.AccountMetaSlice[9] = withdrawBCommonAccountsBuilder.GetUserTokenBAccountAccount()
+	inst.AccountMetaSlice[10] = withdrawBCommonAccountsBuilder.GetReferrerAccount()
+	inst.AccountMetaSlice[11] = withdrawBCommonAccountsBuilder.GetTokenProgramAccount()
+	return inst
+}
+
 // SetWithdrawerAccount sets the "withdrawer" account.
-func (inst *WithdrawB) SetWithdrawerAccount(withdrawer ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetWithdrawerAccount(withdrawer ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(withdrawer).SIGNER()
 	return inst
 }
 
 // GetWithdrawerAccount gets the "withdrawer" account.
-func (inst *WithdrawB) GetWithdrawerAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetWithdrawerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetVaultAccount sets the "vault" account.
-func (inst *WithdrawB) SetVaultAccount(vault ag_solanago.PublicKey) *WithdrawB {
-	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault)
+func (inst *WithdrawBCommonAccountsBuilder) SetVaultAccount(vault ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
+	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault).WRITE()
 	return inst
 }
 
 // GetVaultAccount gets the "vault" account.
-func (inst *WithdrawB) GetVaultAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetVaultAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
-func (inst *WithdrawB) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
 	return inst
 }
 
 // GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
-func (inst *WithdrawB) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetVaultPeriodIAccount sets the "vaultPeriodI" account.
-func (inst *WithdrawB) SetVaultPeriodIAccount(vaultPeriodI ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetVaultPeriodIAccount(vaultPeriodI ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(vaultPeriodI)
 	return inst
 }
 
 // GetVaultPeriodIAccount gets the "vaultPeriodI" account.
-func (inst *WithdrawB) GetVaultPeriodIAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetVaultPeriodIAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetVaultPeriodJAccount sets the "vaultPeriodJ" account.
-func (inst *WithdrawB) SetVaultPeriodJAccount(vaultPeriodJ ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetVaultPeriodJAccount(vaultPeriodJ ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(vaultPeriodJ)
 	return inst
 }
 
 // GetVaultPeriodJAccount gets the "vaultPeriodJ" account.
-func (inst *WithdrawB) GetVaultPeriodJAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetVaultPeriodJAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetUserPositionAccount sets the "userPosition" account.
-func (inst *WithdrawB) SetUserPositionAccount(userPosition ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetUserPositionAccount(userPosition ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(userPosition).WRITE()
 	return inst
 }
 
 // GetUserPositionAccount gets the "userPosition" account.
-func (inst *WithdrawB) GetUserPositionAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetUserPositionAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetUserPositionNftAccountAccount sets the "userPositionNftAccount" account.
-func (inst *WithdrawB) SetUserPositionNftAccountAccount(userPositionNftAccount ag_solanago.PublicKey) *WithdrawB {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(userPositionNftAccount)
+func (inst *WithdrawBCommonAccountsBuilder) SetUserPositionNftAccountAccount(userPositionNftAccount ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
+	inst.AccountMetaSlice[6] = ag_solanago.Meta(userPositionNftAccount).WRITE()
 	return inst
 }
 
 // GetUserPositionNftAccountAccount gets the "userPositionNftAccount" account.
-func (inst *WithdrawB) GetUserPositionNftAccountAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetUserPositionNftAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetVaultTokenBAccountAccount sets the "vaultTokenBAccount" account.
-func (inst *WithdrawB) SetVaultTokenBAccountAccount(vaultTokenBAccount ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetVaultTokenBAccountAccount(vaultTokenBAccount ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(vaultTokenBAccount).WRITE()
 	return inst
 }
 
 // GetVaultTokenBAccountAccount gets the "vaultTokenBAccount" account.
-func (inst *WithdrawB) GetVaultTokenBAccountAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetVaultTokenBAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetVaultTreasuryTokenBAccountAccount sets the "vaultTreasuryTokenBAccount" account.
-func (inst *WithdrawB) SetVaultTreasuryTokenBAccountAccount(vaultTreasuryTokenBAccount ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetVaultTreasuryTokenBAccountAccount(vaultTreasuryTokenBAccount ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(vaultTreasuryTokenBAccount).WRITE()
 	return inst
 }
 
 // GetVaultTreasuryTokenBAccountAccount gets the "vaultTreasuryTokenBAccount" account.
-func (inst *WithdrawB) GetVaultTreasuryTokenBAccountAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetVaultTreasuryTokenBAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
 // SetUserTokenBAccountAccount sets the "userTokenBAccount" account.
-func (inst *WithdrawB) SetUserTokenBAccountAccount(userTokenBAccount ag_solanago.PublicKey) *WithdrawB {
+func (inst *WithdrawBCommonAccountsBuilder) SetUserTokenBAccountAccount(userTokenBAccount ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
 	inst.AccountMetaSlice[9] = ag_solanago.Meta(userTokenBAccount).WRITE()
 	return inst
 }
 
 // GetUserTokenBAccountAccount gets the "userTokenBAccount" account.
-func (inst *WithdrawB) GetUserTokenBAccountAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetUserTokenBAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(9)
 }
 
+// SetReferrerAccount sets the "referrer" account.
+func (inst *WithdrawBCommonAccountsBuilder) SetReferrerAccount(referrer ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
+	inst.AccountMetaSlice[10] = ag_solanago.Meta(referrer).WRITE()
+	return inst
+}
+
+// GetReferrerAccount gets the "referrer" account.
+func (inst *WithdrawBCommonAccountsBuilder) GetReferrerAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(10)
+}
+
 // SetTokenProgramAccount sets the "tokenProgram" account.
-func (inst *WithdrawB) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *WithdrawB {
-	inst.AccountMetaSlice[10] = ag_solanago.Meta(tokenProgram)
+func (inst *WithdrawBCommonAccountsBuilder) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
+	inst.AccountMetaSlice[11] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "tokenProgram" account.
-func (inst *WithdrawB) GetTokenProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(10)
-}
-
-// SetAssociatedTokenProgramAccount sets the "associatedTokenProgram" account.
-func (inst *WithdrawB) SetAssociatedTokenProgramAccount(associatedTokenProgram ag_solanago.PublicKey) *WithdrawB {
-	inst.AccountMetaSlice[11] = ag_solanago.Meta(associatedTokenProgram)
-	return inst
-}
-
-// GetAssociatedTokenProgramAccount gets the "associatedTokenProgram" account.
-func (inst *WithdrawB) GetAssociatedTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *WithdrawBCommonAccountsBuilder) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(11)
 }
 
@@ -200,40 +226,40 @@ func (inst *WithdrawB) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
-			return errors.New("accounts.Withdrawer is not set")
+			return errors.New("accounts.CommonWithdrawer is not set")
 		}
 		if inst.AccountMetaSlice[1] == nil {
-			return errors.New("accounts.Vault is not set")
+			return errors.New("accounts.CommonVault is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
-			return errors.New("accounts.VaultProtoConfig is not set")
+			return errors.New("accounts.CommonVaultProtoConfig is not set")
 		}
 		if inst.AccountMetaSlice[3] == nil {
-			return errors.New("accounts.VaultPeriodI is not set")
+			return errors.New("accounts.CommonVaultPeriodI is not set")
 		}
 		if inst.AccountMetaSlice[4] == nil {
-			return errors.New("accounts.VaultPeriodJ is not set")
+			return errors.New("accounts.CommonVaultPeriodJ is not set")
 		}
 		if inst.AccountMetaSlice[5] == nil {
-			return errors.New("accounts.UserPosition is not set")
+			return errors.New("accounts.CommonUserPosition is not set")
 		}
 		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.UserPositionNftAccount is not set")
+			return errors.New("accounts.CommonUserPositionNftAccount is not set")
 		}
 		if inst.AccountMetaSlice[7] == nil {
-			return errors.New("accounts.VaultTokenBAccount is not set")
+			return errors.New("accounts.CommonVaultTokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[8] == nil {
-			return errors.New("accounts.VaultTreasuryTokenBAccount is not set")
+			return errors.New("accounts.CommonVaultTreasuryTokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[9] == nil {
-			return errors.New("accounts.UserTokenBAccount is not set")
+			return errors.New("accounts.CommonUserTokenBAccount is not set")
 		}
 		if inst.AccountMetaSlice[10] == nil {
-			return errors.New("accounts.TokenProgram is not set")
+			return errors.New("accounts.CommonReferrer is not set")
 		}
 		if inst.AccountMetaSlice[11] == nil {
-			return errors.New("accounts.AssociatedTokenProgram is not set")
+			return errors.New("accounts.CommonTokenProgram is not set")
 		}
 	}
 	return nil
@@ -252,18 +278,18 @@ func (inst *WithdrawB) EncodeToTree(parent ag_treeout.Branches) {
 
 					// Accounts of the instruction:
 					instructionBranch.Child("Accounts[len=12]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("            withdrawer", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("                 vault", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("      vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("          vaultPeriodI", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("          vaultPeriodJ", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("          userPosition", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("       userPositionNft", inst.AccountMetaSlice.Get(6)))
-						accountsBranch.Child(ag_format.Meta("           vaultTokenB", inst.AccountMetaSlice.Get(7)))
-						accountsBranch.Child(ag_format.Meta("   vaultTreasuryTokenB", inst.AccountMetaSlice.Get(8)))
-						accountsBranch.Child(ag_format.Meta("            userTokenB", inst.AccountMetaSlice.Get(9)))
-						accountsBranch.Child(ag_format.Meta("          tokenProgram", inst.AccountMetaSlice.Get(10)))
-						accountsBranch.Child(ag_format.Meta("associatedTokenProgram", inst.AccountMetaSlice.Get(11)))
+						accountsBranch.Child(ag_format.Meta("         common/withdrawer", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("              common/vault", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("   common/vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("       common/vaultPeriodI", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta("       common/vaultPeriodJ", inst.AccountMetaSlice.Get(4)))
+						accountsBranch.Child(ag_format.Meta("       common/userPosition", inst.AccountMetaSlice.Get(5)))
+						accountsBranch.Child(ag_format.Meta("    common/userPositionNft", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("        common/vaultTokenB", inst.AccountMetaSlice.Get(7)))
+						accountsBranch.Child(ag_format.Meta("common/vaultTreasuryTokenB", inst.AccountMetaSlice.Get(8)))
+						accountsBranch.Child(ag_format.Meta("         common/userTokenB", inst.AccountMetaSlice.Get(9)))
+						accountsBranch.Child(ag_format.Meta("           common/referrer", inst.AccountMetaSlice.Get(10)))
+						accountsBranch.Child(ag_format.Meta("       common/tokenProgram", inst.AccountMetaSlice.Get(11)))
 					})
 				})
 		})
@@ -279,29 +305,32 @@ func (obj *WithdrawB) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err erro
 // NewWithdrawBInstruction declares a new WithdrawB instruction with the provided parameters and accounts.
 func NewWithdrawBInstruction(
 	// Accounts:
-	withdrawer ag_solanago.PublicKey,
-	vault ag_solanago.PublicKey,
-	vaultProtoConfig ag_solanago.PublicKey,
-	vaultPeriodI ag_solanago.PublicKey,
-	vaultPeriodJ ag_solanago.PublicKey,
-	userPosition ag_solanago.PublicKey,
-	userPositionNftAccount ag_solanago.PublicKey,
-	vaultTokenBAccount ag_solanago.PublicKey,
-	vaultTreasuryTokenBAccount ag_solanago.PublicKey,
-	userTokenBAccount ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	associatedTokenProgram ag_solanago.PublicKey) *WithdrawB {
+	commonWithdrawer ag_solanago.PublicKey,
+	commonVault ag_solanago.PublicKey,
+	commonVaultProtoConfig ag_solanago.PublicKey,
+	commonVaultPeriodI ag_solanago.PublicKey,
+	commonVaultPeriodJ ag_solanago.PublicKey,
+	commonUserPosition ag_solanago.PublicKey,
+	commonUserPositionNftAccount ag_solanago.PublicKey,
+	commonVaultTokenBAccount ag_solanago.PublicKey,
+	commonVaultTreasuryTokenBAccount ag_solanago.PublicKey,
+	commonUserTokenBAccount ag_solanago.PublicKey,
+	commonReferrer ag_solanago.PublicKey,
+	commonTokenProgram ag_solanago.PublicKey) *WithdrawB {
 	return NewWithdrawBInstructionBuilder().
-		SetWithdrawerAccount(withdrawer).
-		SetVaultAccount(vault).
-		SetVaultProtoConfigAccount(vaultProtoConfig).
-		SetVaultPeriodIAccount(vaultPeriodI).
-		SetVaultPeriodJAccount(vaultPeriodJ).
-		SetUserPositionAccount(userPosition).
-		SetUserPositionNftAccountAccount(userPositionNftAccount).
-		SetVaultTokenBAccountAccount(vaultTokenBAccount).
-		SetVaultTreasuryTokenBAccountAccount(vaultTreasuryTokenBAccount).
-		SetUserTokenBAccountAccount(userTokenBAccount).
-		SetTokenProgramAccount(tokenProgram).
-		SetAssociatedTokenProgramAccount(associatedTokenProgram)
+		SetCommonAccountsFromBuilder(
+			NewWithdrawBCommonAccountsBuilder().
+				SetWithdrawerAccount(commonWithdrawer).
+				SetVaultAccount(commonVault).
+				SetVaultProtoConfigAccount(commonVaultProtoConfig).
+				SetVaultPeriodIAccount(commonVaultPeriodI).
+				SetVaultPeriodJAccount(commonVaultPeriodJ).
+				SetUserPositionAccount(commonUserPosition).
+				SetUserPositionNftAccountAccount(commonUserPositionNftAccount).
+				SetVaultTokenBAccountAccount(commonVaultTokenBAccount).
+				SetVaultTreasuryTokenBAccountAccount(commonVaultTreasuryTokenBAccount).
+				SetUserTokenBAccountAccount(commonUserTokenBAccount).
+				SetReferrerAccount(commonReferrer).
+				SetTokenProgramAccount(commonTokenProgram),
+		)
 }

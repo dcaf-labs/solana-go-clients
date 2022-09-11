@@ -12,7 +12,7 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-var ProgramID ag_solanago.PublicKey = ag_solanago.MustPublicKeyFromBase58("dripTrkvSyQKvkyWg7oi4jmeEGMA5scSYowHArJ9Vwk")
+var ProgramID ag_solanago.PublicKey
 
 func SetProgramID(pubkey ag_solanago.PublicKey) {
 	ProgramID = pubkey
@@ -34,11 +34,11 @@ var (
 
 	Instruction_Deposit = ag_binary.TypeID([8]byte{242, 35, 198, 137, 82, 225, 242, 182})
 
-	Instruction_DepositWithMetadata = ag_binary.TypeID([8]byte{66, 112, 168, 108, 67, 61, 27, 151})
-
 	Instruction_WithdrawB = ag_binary.TypeID([8]byte{28, 146, 254, 247, 183, 161, 195, 149})
 
 	Instruction_ClosePosition = ag_binary.TypeID([8]byte{123, 134, 81, 0, 49, 68, 98, 98})
+
+	Instruction_DepositWithMetadata = ag_binary.TypeID([8]byte{66, 112, 168, 108, 67, 61, 27, 151})
 
 	Instruction_DripSplTokenSwap = ag_binary.TypeID([8]byte{129, 32, 61, 181, 42, 74, 219, 106})
 
@@ -46,7 +46,7 @@ var (
 
 	Instruction_InitVault = ag_binary.TypeID([8]byte{77, 79, 85, 150, 33, 217, 52, 106})
 
-	Instruction_UpdateVaultWhitelistedSwaps = ag_binary.TypeID([8]byte{117, 239, 168, 214, 21, 137, 26, 62})
+	Instruction_SetVaultSwapWhitelist = ag_binary.TypeID([8]byte{215, 229, 51, 175, 90, 52, 232, 25})
 )
 
 // InstructionIDToName returns the name of the instruction given its ID.
@@ -58,20 +58,20 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "InitVaultPeriod"
 	case Instruction_Deposit:
 		return "Deposit"
-	case Instruction_DepositWithMetadata:
-		return "DepositWithMetadata"
 	case Instruction_WithdrawB:
 		return "WithdrawB"
 	case Instruction_ClosePosition:
 		return "ClosePosition"
+	case Instruction_DepositWithMetadata:
+		return "DepositWithMetadata"
 	case Instruction_DripSplTokenSwap:
 		return "DripSplTokenSwap"
 	case Instruction_DripOrcaWhirlpool:
 		return "DripOrcaWhirlpool"
 	case Instruction_InitVault:
 		return "InitVault"
-	case Instruction_UpdateVaultWhitelistedSwaps:
-		return "UpdateVaultWhitelistedSwaps"
+	case Instruction_SetVaultSwapWhitelist:
+		return "SetVaultSwapWhitelist"
 	default:
 		return ""
 	}
@@ -102,13 +102,13 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 			"deposit", (*Deposit)(nil),
 		},
 		{
-			"deposit_with_metadata", (*DepositWithMetadata)(nil),
-		},
-		{
 			"withdraw_b", (*WithdrawB)(nil),
 		},
 		{
 			"close_position", (*ClosePosition)(nil),
+		},
+		{
+			"deposit_with_metadata", (*DepositWithMetadata)(nil),
 		},
 		{
 			"drip_spl_token_swap", (*DripSplTokenSwap)(nil),
@@ -120,7 +120,7 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 			"init_vault", (*InitVault)(nil),
 		},
 		{
-			"update_vault_whitelisted_swaps", (*UpdateVaultWhitelistedSwaps)(nil),
+			"set_vault_swap_whitelist", (*SetVaultSwapWhitelist)(nil),
 		},
 	},
 )

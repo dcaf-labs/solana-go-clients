@@ -18,22 +18,18 @@ type InitVaultPeriod struct {
 	//
 	// [1] = [] vault
 	//
-	// [2] = [] tokenAMint
+	// [2] = [] vaultProtoConfig
 	//
-	// [3] = [] tokenBMint
+	// [3] = [WRITE, SIGNER] creator
 	//
-	// [4] = [] vaultProtoConfig
-	//
-	// [5] = [WRITE, SIGNER] creator
-	//
-	// [6] = [] systemProgram
+	// [4] = [] systemProgram
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewInitVaultPeriodInstructionBuilder creates a new `InitVaultPeriod` instruction builder.
 func NewInitVaultPeriodInstructionBuilder() *InitVaultPeriod {
 	nd := &InitVaultPeriod{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 7),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 5),
 	}
 	return nd
 }
@@ -66,59 +62,37 @@ func (inst *InitVaultPeriod) GetVaultAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
-// SetTokenAMintAccount sets the "tokenAMint" account.
-func (inst *InitVaultPeriod) SetTokenAMintAccount(tokenAMint ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[2] = ag_solanago.Meta(tokenAMint)
-	return inst
-}
-
-// GetTokenAMintAccount gets the "tokenAMint" account.
-func (inst *InitVaultPeriod) GetTokenAMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(2)
-}
-
-// SetTokenBMintAccount sets the "tokenBMint" account.
-func (inst *InitVaultPeriod) SetTokenBMintAccount(tokenBMint ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[3] = ag_solanago.Meta(tokenBMint)
-	return inst
-}
-
-// GetTokenBMintAccount gets the "tokenBMint" account.
-func (inst *InitVaultPeriod) GetTokenBMintAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(3)
-}
-
 // SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
 func (inst *InitVaultPeriod) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[4] = ag_solanago.Meta(vaultProtoConfig)
+	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
 	return inst
 }
 
 // GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
 func (inst *InitVaultPeriod) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(4)
+	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetCreatorAccount sets the "creator" account.
 func (inst *InitVaultPeriod) SetCreatorAccount(creator ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[5] = ag_solanago.Meta(creator).WRITE().SIGNER()
+	inst.AccountMetaSlice[3] = ag_solanago.Meta(creator).WRITE().SIGNER()
 	return inst
 }
 
 // GetCreatorAccount gets the "creator" account.
 func (inst *InitVaultPeriod) GetCreatorAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(5)
+	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetSystemProgramAccount sets the "systemProgram" account.
 func (inst *InitVaultPeriod) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(systemProgram)
+	inst.AccountMetaSlice[4] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "systemProgram" account.
 func (inst *InitVaultPeriod) GetSystemProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(6)
+	return inst.AccountMetaSlice.Get(4)
 }
 
 func (inst InitVaultPeriod) Build() *Instruction {
@@ -155,18 +129,12 @@ func (inst *InitVaultPeriod) Validate() error {
 			return errors.New("accounts.Vault is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
-			return errors.New("accounts.TokenAMint is not set")
-		}
-		if inst.AccountMetaSlice[3] == nil {
-			return errors.New("accounts.TokenBMint is not set")
-		}
-		if inst.AccountMetaSlice[4] == nil {
 			return errors.New("accounts.VaultProtoConfig is not set")
 		}
-		if inst.AccountMetaSlice[5] == nil {
+		if inst.AccountMetaSlice[3] == nil {
 			return errors.New("accounts.Creator is not set")
 		}
-		if inst.AccountMetaSlice[6] == nil {
+		if inst.AccountMetaSlice[4] == nil {
 			return errors.New("accounts.SystemProgram is not set")
 		}
 	}
@@ -187,14 +155,12 @@ func (inst *InitVaultPeriod) EncodeToTree(parent ag_treeout.Branches) {
 					})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=7]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+					instructionBranch.Child("Accounts[len=5]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
 						accountsBranch.Child(ag_format.Meta("     vaultPeriod", inst.AccountMetaSlice.Get(0)))
 						accountsBranch.Child(ag_format.Meta("           vault", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("      tokenAMint", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("      tokenBMint", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("vaultProtoConfig", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("         creator", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("   systemProgram", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("         creator", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta("   systemProgram", inst.AccountMetaSlice.Get(4)))
 					})
 				})
 		})
@@ -224,8 +190,6 @@ func NewInitVaultPeriodInstruction(
 	// Accounts:
 	vaultPeriod ag_solanago.PublicKey,
 	vault ag_solanago.PublicKey,
-	tokenAMint ag_solanago.PublicKey,
-	tokenBMint ag_solanago.PublicKey,
 	vaultProtoConfig ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
 	systemProgram ag_solanago.PublicKey) *InitVaultPeriod {
@@ -233,8 +197,6 @@ func NewInitVaultPeriodInstruction(
 		SetParams(params).
 		SetVaultPeriodAccount(vaultPeriod).
 		SetVaultAccount(vault).
-		SetTokenAMintAccount(tokenAMint).
-		SetTokenBMintAccount(tokenBMint).
 		SetVaultProtoConfigAccount(vaultProtoConfig).
 		SetCreatorAccount(creator).
 		SetSystemProgramAccount(systemProgram)

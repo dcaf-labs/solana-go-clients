@@ -11,6 +11,7 @@ import (
 type Position struct {
 	Vault                     ag_solanago.PublicKey
 	PositionAuthority         ag_solanago.PublicKey
+	Referrer                  ag_solanago.PublicKey
 	DepositedTokenAAmount     uint64
 	WithdrawnTokenBAmount     uint64
 	DepositTimestamp          int64
@@ -36,6 +37,11 @@ func (obj Position) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	}
 	// Serialize `PositionAuthority` param:
 	err = encoder.Encode(obj.PositionAuthority)
+	if err != nil {
+		return err
+	}
+	// Serialize `Referrer` param:
+	err = encoder.Encode(obj.Referrer)
 	if err != nil {
 		return err
 	}
@@ -103,6 +109,11 @@ func (obj *Position) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error
 	}
 	// Deserialize `PositionAuthority`:
 	err = decoder.Decode(&obj.PositionAuthority)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Referrer`:
+	err = decoder.Decode(&obj.Referrer)
 	if err != nil {
 		return err
 	}
@@ -250,6 +261,7 @@ type VaultProtoConfig struct {
 	Granularity             uint64
 	TokenADripTriggerSpread uint16
 	TokenBWithdrawalSpread  uint16
+	TokenBReferralSpread    uint16
 	Admin                   ag_solanago.PublicKey
 }
 
@@ -273,6 +285,11 @@ func (obj VaultProtoConfig) MarshalWithEncoder(encoder *ag_binary.Encoder) (err 
 	}
 	// Serialize `TokenBWithdrawalSpread` param:
 	err = encoder.Encode(obj.TokenBWithdrawalSpread)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenBReferralSpread` param:
+	err = encoder.Encode(obj.TokenBReferralSpread)
 	if err != nil {
 		return err
 	}
@@ -310,6 +327,11 @@ func (obj *VaultProtoConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 	}
 	// Deserialize `TokenBWithdrawalSpread`:
 	err = decoder.Decode(&obj.TokenBWithdrawalSpread)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenBReferralSpread`:
+	err = decoder.Decode(&obj.TokenBReferralSpread)
 	if err != nil {
 		return err
 	}
