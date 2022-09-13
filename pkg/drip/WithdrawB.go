@@ -13,7 +13,7 @@ import (
 // WithdrawB is the `withdrawB` instruction.
 type WithdrawB struct {
 
-	// ····· common: [0] = [SIGNER] withdrawer
+	// ····· common: [0] = [WRITE, SIGNER] withdrawer
 	//
 	// ············· [1] = [WRITE] vault
 	//
@@ -75,7 +75,7 @@ func (inst *WithdrawB) SetCommonAccountsFromBuilder(withdrawBCommonAccountsBuild
 
 // SetWithdrawerAccount sets the "withdrawer" account.
 func (inst *WithdrawBCommonAccountsBuilder) SetWithdrawerAccount(withdrawer ag_solanago.PublicKey) *WithdrawBCommonAccountsBuilder {
-	inst.AccountMetaSlice[0] = ag_solanago.Meta(withdrawer).SIGNER()
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(withdrawer).WRITE().SIGNER()
 	return inst
 }
 

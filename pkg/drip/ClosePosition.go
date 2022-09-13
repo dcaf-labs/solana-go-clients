@@ -13,7 +13,7 @@ import (
 // ClosePosition is the `closePosition` instruction.
 type ClosePosition struct {
 
-	// ····· common: [0] = [SIGNER] withdrawer
+	// ····· common: [0] = [WRITE, SIGNER] withdrawer
 	//
 	// ············· [1] = [WRITE] vault
 	//
@@ -83,7 +83,7 @@ func (inst *ClosePosition) SetCommonAccountsFromBuilder(closePositionCommonAccou
 
 // SetWithdrawerAccount sets the "withdrawer" account.
 func (inst *ClosePositionCommonAccountsBuilder) SetWithdrawerAccount(withdrawer ag_solanago.PublicKey) *ClosePositionCommonAccountsBuilder {
-	inst.AccountMetaSlice[0] = ag_solanago.Meta(withdrawer).SIGNER()
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(withdrawer).WRITE().SIGNER()
 	return inst
 }
 
