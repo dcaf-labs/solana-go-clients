@@ -18,18 +18,16 @@ type InitVaultPeriod struct {
 	//
 	// [1] = [] vault
 	//
-	// [2] = [] vaultProtoConfig
+	// [2] = [WRITE, SIGNER] creator
 	//
-	// [3] = [WRITE, SIGNER] creator
-	//
-	// [4] = [] systemProgram
+	// [3] = [] systemProgram
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewInitVaultPeriodInstructionBuilder creates a new `InitVaultPeriod` instruction builder.
 func NewInitVaultPeriodInstructionBuilder() *InitVaultPeriod {
 	nd := &InitVaultPeriod{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 5),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 4),
 	}
 	return nd
 }
@@ -62,37 +60,26 @@ func (inst *InitVaultPeriod) GetVaultAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
-// SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
-func (inst *InitVaultPeriod) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
-	return inst
-}
-
-// GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
-func (inst *InitVaultPeriod) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(2)
-}
-
 // SetCreatorAccount sets the "creator" account.
 func (inst *InitVaultPeriod) SetCreatorAccount(creator ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[3] = ag_solanago.Meta(creator).WRITE().SIGNER()
+	inst.AccountMetaSlice[2] = ag_solanago.Meta(creator).WRITE().SIGNER()
 	return inst
 }
 
 // GetCreatorAccount gets the "creator" account.
 func (inst *InitVaultPeriod) GetCreatorAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(3)
+	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetSystemProgramAccount sets the "systemProgram" account.
 func (inst *InitVaultPeriod) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *InitVaultPeriod {
-	inst.AccountMetaSlice[4] = ag_solanago.Meta(systemProgram)
+	inst.AccountMetaSlice[3] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "systemProgram" account.
 func (inst *InitVaultPeriod) GetSystemProgramAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(4)
+	return inst.AccountMetaSlice.Get(3)
 }
 
 func (inst InitVaultPeriod) Build() *Instruction {
@@ -129,12 +116,9 @@ func (inst *InitVaultPeriod) Validate() error {
 			return errors.New("accounts.Vault is not set")
 		}
 		if inst.AccountMetaSlice[2] == nil {
-			return errors.New("accounts.VaultProtoConfig is not set")
-		}
-		if inst.AccountMetaSlice[3] == nil {
 			return errors.New("accounts.Creator is not set")
 		}
-		if inst.AccountMetaSlice[4] == nil {
+		if inst.AccountMetaSlice[3] == nil {
 			return errors.New("accounts.SystemProgram is not set")
 		}
 	}
@@ -155,12 +139,11 @@ func (inst *InitVaultPeriod) EncodeToTree(parent ag_treeout.Branches) {
 					})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=5]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("     vaultPeriod", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("           vault", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("vaultProtoConfig", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("         creator", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("   systemProgram", inst.AccountMetaSlice.Get(4)))
+					instructionBranch.Child("Accounts[len=4]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+						accountsBranch.Child(ag_format.Meta("  vaultPeriod", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("        vault", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("      creator", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("systemProgram", inst.AccountMetaSlice.Get(3)))
 					})
 				})
 		})
@@ -190,14 +173,12 @@ func NewInitVaultPeriodInstruction(
 	// Accounts:
 	vaultPeriod ag_solanago.PublicKey,
 	vault ag_solanago.PublicKey,
-	vaultProtoConfig ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
 	systemProgram ag_solanago.PublicKey) *InitVaultPeriod {
 	return NewInitVaultPeriodInstructionBuilder().
 		SetParams(params).
 		SetVaultPeriodAccount(vaultPeriod).
 		SetVaultAccount(vault).
-		SetVaultProtoConfigAccount(vaultProtoConfig).
 		SetCreatorAccount(creator).
 		SetSystemProgramAccount(systemProgram)
 }
