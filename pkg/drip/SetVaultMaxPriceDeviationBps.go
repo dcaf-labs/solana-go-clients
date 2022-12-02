@@ -10,9 +10,9 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-// SetVaultSwapWhitelist is the `setVaultSwapWhitelist` instruction.
-type SetVaultSwapWhitelist struct {
-	Params *SetVaultWhitelistedSwapsParams
+// SetVaultMaxPriceDeviationBps is the `setVaultMaxPriceDeviationBps` instruction.
+type SetVaultMaxPriceDeviationBps struct {
+	Params *SetVaultMaxPriceDeviationBpsParams
 
 	// ····· vaultUpdateCommonAccounts: [0] = [WRITE, SIGNER] admin
 	//
@@ -22,88 +22,88 @@ type SetVaultSwapWhitelist struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewSetVaultSwapWhitelistInstructionBuilder creates a new `SetVaultSwapWhitelist` instruction builder.
-func NewSetVaultSwapWhitelistInstructionBuilder() *SetVaultSwapWhitelist {
-	nd := &SetVaultSwapWhitelist{
+// NewSetVaultMaxPriceDeviationBpsInstructionBuilder creates a new `SetVaultMaxPriceDeviationBps` instruction builder.
+func NewSetVaultMaxPriceDeviationBpsInstructionBuilder() *SetVaultMaxPriceDeviationBps {
+	nd := &SetVaultMaxPriceDeviationBps{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 3),
 	}
 	return nd
 }
 
 // SetParams sets the "params" parameter.
-func (inst *SetVaultSwapWhitelist) SetParams(params SetVaultWhitelistedSwapsParams) *SetVaultSwapWhitelist {
+func (inst *SetVaultMaxPriceDeviationBps) SetParams(params SetVaultMaxPriceDeviationBpsParams) *SetVaultMaxPriceDeviationBps {
 	inst.Params = &params
 	return inst
 }
 
-type SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder struct {
+type SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-func NewSetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder() *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder {
-	return &SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder{
+func NewSetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder() *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder {
+	return &SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 3),
 	}
 }
 
-func (inst *SetVaultSwapWhitelist) SetVaultUpdateCommonAccountsAccountsFromBuilder(setVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder) *SetVaultSwapWhitelist {
-	inst.AccountMetaSlice[0] = setVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder.GetAdminAccount()
-	inst.AccountMetaSlice[1] = setVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder.GetVaultAccount()
-	inst.AccountMetaSlice[2] = setVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder.GetVaultProtoConfigAccount()
+func (inst *SetVaultMaxPriceDeviationBps) SetVaultUpdateCommonAccountsAccountsFromBuilder(setVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder) *SetVaultMaxPriceDeviationBps {
+	inst.AccountMetaSlice[0] = setVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder.GetAdminAccount()
+	inst.AccountMetaSlice[1] = setVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder.GetVaultAccount()
+	inst.AccountMetaSlice[2] = setVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder.GetVaultProtoConfigAccount()
 	return inst
 }
 
 // SetAdminAccount sets the "admin" account.
-func (inst *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder) SetAdminAccount(admin ag_solanago.PublicKey) *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder {
+func (inst *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder) SetAdminAccount(admin ag_solanago.PublicKey) *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(admin).WRITE().SIGNER()
 	return inst
 }
 
 // GetAdminAccount gets the "admin" account.
-func (inst *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder) GetAdminAccount() *ag_solanago.AccountMeta {
+func (inst *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder) GetAdminAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetVaultAccount sets the "vault" account.
-func (inst *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder) SetVaultAccount(vault ag_solanago.PublicKey) *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder {
+func (inst *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder) SetVaultAccount(vault ag_solanago.PublicKey) *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(vault).WRITE()
 	return inst
 }
 
 // GetVaultAccount gets the "vault" account.
-func (inst *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder) GetVaultAccount() *ag_solanago.AccountMeta {
+func (inst *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder) GetVaultAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetVaultProtoConfigAccount sets the "vaultProtoConfig" account.
-func (inst *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder {
+func (inst *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder) SetVaultProtoConfigAccount(vaultProtoConfig ag_solanago.PublicKey) *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(vaultProtoConfig)
 	return inst
 }
 
 // GetVaultProtoConfigAccount gets the "vaultProtoConfig" account.
-func (inst *SetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
+func (inst *SetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder) GetVaultProtoConfigAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
-func (inst SetVaultSwapWhitelist) Build() *Instruction {
+func (inst SetVaultMaxPriceDeviationBps) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_SetVaultSwapWhitelist,
+		TypeID: Instruction_SetVaultMaxPriceDeviationBps,
 	}}
 }
 
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst SetVaultSwapWhitelist) ValidateAndBuild() (*Instruction, error) {
+func (inst SetVaultMaxPriceDeviationBps) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *SetVaultSwapWhitelist) Validate() error {
+func (inst *SetVaultMaxPriceDeviationBps) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.Params == nil {
@@ -126,11 +126,11 @@ func (inst *SetVaultSwapWhitelist) Validate() error {
 	return nil
 }
 
-func (inst *SetVaultSwapWhitelist) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *SetVaultMaxPriceDeviationBps) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
-			programBranch.Child(ag_format.Instruction("SetVaultSwapWhitelist")).
+			programBranch.Child(ag_format.Instruction("SetVaultMaxPriceDeviationBps")).
 				//
 				ParentFunc(func(instructionBranch ag_treeout.Branches) {
 
@@ -149,7 +149,7 @@ func (inst *SetVaultSwapWhitelist) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj SetVaultSwapWhitelist) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SetVaultMaxPriceDeviationBps) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `Params` param:
 	err = encoder.Encode(obj.Params)
 	if err != nil {
@@ -157,7 +157,7 @@ func (obj SetVaultSwapWhitelist) MarshalWithEncoder(encoder *ag_binary.Encoder) 
 	}
 	return nil
 }
-func (obj *SetVaultSwapWhitelist) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SetVaultMaxPriceDeviationBps) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `Params`:
 	err = decoder.Decode(&obj.Params)
 	if err != nil {
@@ -166,18 +166,18 @@ func (obj *SetVaultSwapWhitelist) UnmarshalWithDecoder(decoder *ag_binary.Decode
 	return nil
 }
 
-// NewSetVaultSwapWhitelistInstruction declares a new SetVaultSwapWhitelist instruction with the provided parameters and accounts.
-func NewSetVaultSwapWhitelistInstruction(
+// NewSetVaultMaxPriceDeviationBpsInstruction declares a new SetVaultMaxPriceDeviationBps instruction with the provided parameters and accounts.
+func NewSetVaultMaxPriceDeviationBpsInstruction(
 	// Parameters:
-	params SetVaultWhitelistedSwapsParams,
+	params SetVaultMaxPriceDeviationBpsParams,
 	// Accounts:
 	vaultUpdateCommonAccountsAdmin ag_solanago.PublicKey,
 	vaultUpdateCommonAccountsVault ag_solanago.PublicKey,
-	vaultUpdateCommonAccountsVaultProtoConfig ag_solanago.PublicKey) *SetVaultSwapWhitelist {
-	return NewSetVaultSwapWhitelistInstructionBuilder().
+	vaultUpdateCommonAccountsVaultProtoConfig ag_solanago.PublicKey) *SetVaultMaxPriceDeviationBps {
+	return NewSetVaultMaxPriceDeviationBpsInstructionBuilder().
 		SetParams(params).
 		SetVaultUpdateCommonAccountsAccountsFromBuilder(
-			NewSetVaultSwapWhitelistVaultUpdateCommonAccountsAccountsBuilder().
+			NewSetVaultMaxPriceDeviationBpsVaultUpdateCommonAccountsAccountsBuilder().
 				SetAdminAccount(vaultUpdateCommonAccountsAdmin).
 				SetVaultAccount(vaultUpdateCommonAccountsVault).
 				SetVaultProtoConfigAccount(vaultUpdateCommonAccountsVaultProtoConfig),

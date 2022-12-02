@@ -40,11 +40,11 @@ func (obj *InitializeVaultParams) UnmarshalWithDecoder(decoder *ag_binary.Decode
 	return nil
 }
 
-type UpdateVaultWhitelistedSwapsParams struct {
+type SetVaultWhitelistedSwapsParams struct {
 	WhitelistedSwaps []ag_solanago.PublicKey
 }
 
-func (obj UpdateVaultWhitelistedSwapsParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SetVaultWhitelistedSwapsParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `WhitelistedSwaps` param:
 	err = encoder.Encode(obj.WhitelistedSwaps)
 	if err != nil {
@@ -53,9 +53,75 @@ func (obj UpdateVaultWhitelistedSwapsParams) MarshalWithEncoder(encoder *ag_bina
 	return nil
 }
 
-func (obj *UpdateVaultWhitelistedSwapsParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SetVaultWhitelistedSwapsParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `WhitelistedSwaps`:
 	err = decoder.Decode(&obj.WhitelistedSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type SetVaultMaxPriceDeviationBpsParams struct {
+	MaxPriceDeviation uint16
+}
+
+func (obj SetVaultMaxPriceDeviationBpsParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `MaxPriceDeviation` param:
+	err = encoder.Encode(obj.MaxPriceDeviation)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SetVaultMaxPriceDeviationBpsParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `MaxPriceDeviation`:
+	err = decoder.Decode(&obj.MaxPriceDeviation)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type UpdateOracleConfigParams struct {
+	Enabled            bool
+	Source             uint8
+	NewUpdateAuthority ag_solanago.PublicKey
+}
+
+func (obj UpdateOracleConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Enabled` param:
+	err = encoder.Encode(obj.Enabled)
+	if err != nil {
+		return err
+	}
+	// Serialize `Source` param:
+	err = encoder.Encode(obj.Source)
+	if err != nil {
+		return err
+	}
+	// Serialize `NewUpdateAuthority` param:
+	err = encoder.Encode(obj.NewUpdateAuthority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *UpdateOracleConfigParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Enabled`:
+	err = decoder.Decode(&obj.Enabled)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Source`:
+	err = decoder.Decode(&obj.Source)
+	if err != nil {
+		return err
+	}
+	// Deserialize `NewUpdateAuthority`:
+	err = decoder.Decode(&obj.NewUpdateAuthority)
 	if err != nil {
 		return err
 	}
@@ -177,6 +243,50 @@ func (obj InitializeVaultPeriodParams) MarshalWithEncoder(encoder *ag_binary.Enc
 func (obj *InitializeVaultPeriodParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `PeriodId`:
 	err = decoder.Decode(&obj.PeriodId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type InitializeOracleConfigParams struct {
+	Enabled         bool
+	Source          uint8
+	UpdateAuthority ag_solanago.PublicKey
+}
+
+func (obj InitializeOracleConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Enabled` param:
+	err = encoder.Encode(obj.Enabled)
+	if err != nil {
+		return err
+	}
+	// Serialize `Source` param:
+	err = encoder.Encode(obj.Source)
+	if err != nil {
+		return err
+	}
+	// Serialize `UpdateAuthority` param:
+	err = encoder.Encode(obj.UpdateAuthority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *InitializeOracleConfigParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Enabled`:
+	err = decoder.Decode(&obj.Enabled)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Source`:
+	err = decoder.Decode(&obj.Source)
+	if err != nil {
+		return err
+	}
+	// Deserialize `UpdateAuthority`:
+	err = decoder.Decode(&obj.UpdateAuthority)
 	if err != nil {
 		return err
 	}

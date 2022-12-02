@@ -8,6 +8,114 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
+type OracleConfig struct {
+	Enabled         bool
+	Source          uint8
+	UpdateAuthority ag_solanago.PublicKey
+	TokenAMint      ag_solanago.PublicKey
+	TokenAPrice     ag_solanago.PublicKey
+	TokenBMint      ag_solanago.PublicKey
+	TokenBPrice     ag_solanago.PublicKey
+}
+
+var OracleConfigDiscriminator = [8]byte{133, 196, 152, 50, 27, 21, 145, 254}
+
+func (obj OracleConfig) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(OracleConfigDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `Enabled` param:
+	err = encoder.Encode(obj.Enabled)
+	if err != nil {
+		return err
+	}
+	// Serialize `Source` param:
+	err = encoder.Encode(obj.Source)
+	if err != nil {
+		return err
+	}
+	// Serialize `UpdateAuthority` param:
+	err = encoder.Encode(obj.UpdateAuthority)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenAMint` param:
+	err = encoder.Encode(obj.TokenAMint)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenAPrice` param:
+	err = encoder.Encode(obj.TokenAPrice)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenBMint` param:
+	err = encoder.Encode(obj.TokenBMint)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenBPrice` param:
+	err = encoder.Encode(obj.TokenBPrice)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *OracleConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(OracleConfigDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[133 196 152 50 27 21 145 254]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `Enabled`:
+	err = decoder.Decode(&obj.Enabled)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Source`:
+	err = decoder.Decode(&obj.Source)
+	if err != nil {
+		return err
+	}
+	// Deserialize `UpdateAuthority`:
+	err = decoder.Decode(&obj.UpdateAuthority)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenAMint`:
+	err = decoder.Decode(&obj.TokenAMint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenAPrice`:
+	err = decoder.Decode(&obj.TokenAPrice)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenBMint`:
+	err = decoder.Decode(&obj.TokenBMint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenBPrice`:
+	err = decoder.Decode(&obj.TokenBPrice)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type Position struct {
 	Vault                     ag_solanago.PublicKey
 	PositionAuthority         ag_solanago.PublicKey
@@ -357,6 +465,8 @@ type Vault struct {
 	Bump                    uint8
 	LimitSwaps              bool
 	MaxSlippageBps          uint16
+	OracleConfig            ag_solanago.PublicKey
+	MaxPriceDeviationBps    uint16
 }
 
 var VaultDiscriminator = [8]byte{211, 8, 232, 43, 2, 152, 117, 119}
@@ -429,6 +539,16 @@ func (obj Vault) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	}
 	// Serialize `MaxSlippageBps` param:
 	err = encoder.Encode(obj.MaxSlippageBps)
+	if err != nil {
+		return err
+	}
+	// Serialize `OracleConfig` param:
+	err = encoder.Encode(obj.OracleConfig)
+	if err != nil {
+		return err
+	}
+	// Serialize `MaxPriceDeviationBps` param:
+	err = encoder.Encode(obj.MaxPriceDeviationBps)
 	if err != nil {
 		return err
 	}
@@ -511,6 +631,58 @@ func (obj *Vault) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	}
 	// Deserialize `MaxSlippageBps`:
 	err = decoder.Decode(&obj.MaxSlippageBps)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OracleConfig`:
+	err = decoder.Decode(&obj.OracleConfig)
+	if err != nil {
+		return err
+	}
+	// Deserialize `MaxPriceDeviationBps`:
+	err = decoder.Decode(&obj.MaxPriceDeviationBps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type NoData struct {
+	Data uint8
+}
+
+var NoDataDiscriminator = [8]byte{143, 170, 242, 179, 177, 24, 0, 94}
+
+func (obj NoData) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(NoDataDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `Data` param:
+	err = encoder.Encode(obj.Data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *NoData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(NoDataDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[143 170 242 179 177 24 0 94]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `Data`:
+	err = decoder.Decode(&obj.Data)
 	if err != nil {
 		return err
 	}
