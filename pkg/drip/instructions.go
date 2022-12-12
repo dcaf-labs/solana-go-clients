@@ -42,6 +42,8 @@ var (
 
 	Instruction_DripOrcaWhirlpool = ag_binary.TypeID([8]byte{31, 217, 180, 147, 224, 40, 53, 88})
 
+	Instruction_DripV2OrcaWhirlpool = ag_binary.TypeID([8]byte{57, 234, 17, 173, 111, 158, 193, 112})
+
 	Instruction_WithdrawB = ag_binary.TypeID([8]byte{28, 146, 254, 247, 183, 161, 195, 149})
 
 	Instruction_ClosePosition = ag_binary.TypeID([8]byte{123, 134, 81, 0, 49, 68, 98, 98})
@@ -74,6 +76,8 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "DripSplTokenSwap"
 	case Instruction_DripOrcaWhirlpool:
 		return "DripOrcaWhirlpool"
+	case Instruction_DripV2OrcaWhirlpool:
+		return "DripV2OrcaWhirlpool"
 	case Instruction_WithdrawB:
 		return "WithdrawB"
 	case Instruction_ClosePosition:
@@ -128,6 +132,9 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 		},
 		{
 			"drip_orca_whirlpool", (*DripOrcaWhirlpool)(nil),
+		},
+		{
+			"drip_v2_orca_whirlpool", (*DripV2OrcaWhirlpool)(nil),
 		},
 		{
 			"withdraw_b", (*WithdrawB)(nil),
