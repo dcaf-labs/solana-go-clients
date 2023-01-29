@@ -1,4 +1,12 @@
-# Solana GO Clients
+# DEPRECATED
+
+Please use the following libraries instead:
+
+- https://github.com/dcaf-labs/solana-token-swap-go
+- https://github.com/dcaf-labs/solana-whirlpool-go
+- https://github.com/dcaf-labs/solana-drip-go
+
+## Solana GO Clients
 
 ## Generate Commands
 
